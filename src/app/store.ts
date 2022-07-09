@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import createSagaMiddleware from 'redux-saga'
+import { sagas } from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
@@ -9,6 +10,8 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
 });
+
+sagaMiddleware.run(sagas);
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
