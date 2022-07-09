@@ -1,2 +1,1 @@
-export function *sagas() {
-}
+export function* sagas() {}
