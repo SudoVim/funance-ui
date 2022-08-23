@@ -1,4 +1,5 @@
 import { call, takeEvery } from "redux-saga/effects";
+import { apiSlice } from "./state";
 
 export type APIResponse = {
   request: APIRequest;
@@ -53,3 +54,5 @@ export const actions = {
 export function* sagas() {
   yield takeEvery("API/REQUEST", rawRequest);
 }
+
+export default apiSlice.reducer;
