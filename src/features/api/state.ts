@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "app/store";
 
 export type APIAuth = {
   token?: string;
@@ -12,8 +11,8 @@ export type APIState = {
 
 const initialState: APIState = {
   auth: {
-    token: localStorage.getItem("auth.token", undefined),
-    expiry: localStorage.getItem("auth.expiry", undefined),
+    token: localStorage.getItem("auth.token") || undefined,
+    expiry: localStorage.getItem("auth.expiry") || undefined,
   },
 };
 
@@ -23,13 +22,13 @@ export const apiSlice = createSlice({
   reducers: {
     setAuth: (state: APIState, action: PayloadAction<APIAuth>) => {
       const { payload } = action;
-      localStorage.setItem("auth.token", payload.token);
-      localStorage.setItem("auth.expiry", payload.expiry);
+      localStorage.setItem("auth.token", payload.token ?? "");
+      localStorage.setItem("auth.expiry", payload.expiry ?? "");
       state.auth = payload;
     },
   },
 });
 
 export const selectors = {
-  hasAuth: (state: RootState) => Boolean(state.api.auth.token),
+  hasAuth: (state: any) => Boolean(state.api.auth.token),
 };

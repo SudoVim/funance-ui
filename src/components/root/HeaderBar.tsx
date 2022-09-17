@@ -7,7 +7,7 @@ import LoginButton from "./LoginButton";
 
 export function HeaderBar() {
   const theme = useTheme();
-  const isLoggedIn = useSelector(selectors.account.isLoggedIn);
+  const hasAuth = useSelector(selectors.api.hasAuth);
   return (
     <Box
       sx={{
@@ -32,7 +32,7 @@ export function HeaderBar() {
           Funance
         </Box>
       </Box>
-      {isLoggedIn ? null : <LoginButton />}
+      {hasAuth ? null : <LoginButton />}
     </Box>
   );
 }

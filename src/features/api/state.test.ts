@@ -1,6 +1,6 @@
 import { apiSlice, selectors, APIState } from "./state";
 
-export const initialState: APIState = {
+export const initialState = {
   auth: {},
 };
 

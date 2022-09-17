@@ -1,10 +1,19 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectors } from "features";
+import Unauthed from "./Unauthed";
+import { Outlet } from "react-router-dom";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import HeaderBar from "./HeaderBar";
 
-export function Root() {
+export type Props = {};
+
+export const Top: React.FC<Props> = () => {
   const theme = useTheme();
+  const hasAuth = useSelector(selectors.api.hasAuth);
+  if (!hasAuth) {
+    return <Unauthed />;
+  }
   return (
     <Box
       sx={{
@@ -15,9 +24,9 @@ export function Root() {
         background: theme.palette.background.default,
       }}
     >
-      <HeaderBar />
+      <Outlet />
     </Box>
   );
-}
+};
 
-export default Root;
+export default Top;

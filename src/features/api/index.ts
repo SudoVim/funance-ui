@@ -1,5 +1,6 @@
 import { call, takeEvery } from "redux-saga/effects";
 import { apiSlice } from "./state";
+export { selectors } from "./state";
 
 export type APIResponse = {
   request: APIRequest;

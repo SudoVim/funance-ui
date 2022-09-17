@@ -1,4 +1,7 @@
-import { selectors as account } from "./account";
+import { selectors as accountSelectors } from "./account";
+import { selectors as apiSelectors } from "./api";
+
 export const selectors = {
-  account,
+  account: accountSelectors,
+  api: apiSelectors,
 };
