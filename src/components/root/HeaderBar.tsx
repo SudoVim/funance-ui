@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { selectors } from "features";
 import LoginButton from "./LoginButton";
@@ -15,24 +15,34 @@ export function HeaderBar() {
         height: "30px",
         padding: "5px",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: "center",
         background: theme.palette.primary.main,
-        display: "flex",
-        direction: "row",
       }}
     >
-      <Box>
-        <Box
-          sx={{
-            fontSize: "large",
-            fontWeight: "bold",
-            color: theme.palette.text.primary,
-          }}
-        >
-          Funance
-        </Box>
-      </Box>
-      {hasAuth ? null : <LoginButton />}
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          <Box
+            sx={{
+              fontSize: "large",
+              fontWeight: "bold",
+              color: theme.palette.text.primary,
+            }}
+          >
+            Funance
+          </Box>
+        </Grid>
+        <Grid item xs={8} />
+        <Grid item xs={2}>
+          <Box
+            sx={{
+              textAlign: "right",
+              marginRight: "20px",
+            }}
+          >
+            {hasAuth ? null : <LoginButton />}
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 }
