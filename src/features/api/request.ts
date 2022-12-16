@@ -1,8 +1,9 @@
 import { call } from "redux-saga/effects";
 
 export const API_URL = process.env.API_URL ?? "http://localhost:8005/api/v1/";
+export const API_CROSS_SITE = process.env.API_CROSS_SITE === "true";
 
-function normalizePath(path: string): string {
+function pathToURL(path: string): string {
   if (path.startsWith(API_URL)) {
     return path;
   } else if (path.startsWith("/")) {
@@ -31,17 +32,26 @@ export function promiseJson(response: Response) {
 
 export function* rawRequest(request: APIRequest) {
   const { path, method, body } = request;
-  const headers = {
+  const headers: any = {
     Accept: "application/json",
-    "Content-Type": "application/json",
-    "Sec-Fetch-Site": "cross-site",
   };
-  const response: Response = yield call(fetch, normalizePath(path), {
+  const opts: any = {
     method,
     headers,
-    body: body ? JSON.stringify(body) : undefined,
+    // TODO: These need to be added for requests that include credentials.
     //credentials: "include",
-  });
+  };
+
+  if (API_CROSS_SITE) {
+    headers["Sec-Fetch-Site"] = "cross-site";
+  }
+
+  if (body !== undefined) {
+    headers["Content-Type"] = "application/json";
+    opts.body = JSON.stringify(body);
+  }
+
+  const response: Response = yield call(fetch, pathToURL(path), opts);
 
   const { status } = response;
   const success = status >= 200 && status < 300;

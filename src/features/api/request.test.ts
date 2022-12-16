@@ -15,10 +15,7 @@ describe("request saga", () => {
         method: "GET",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json",
-          "Sec-Fetch-Site": "cross-site",
         },
-        body: undefined,
       })
       .next(response)
       .isDone();
@@ -37,10 +34,7 @@ describe("request saga", () => {
         method: "GET",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json",
-          "Sec-Fetch-Site": "cross-site",
         },
-        body: undefined,
       })
       .next(response)
       .call(promiseJson, response)
@@ -61,10 +55,7 @@ describe("request saga", () => {
         method: "GET",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json",
-          "Sec-Fetch-Site": "cross-site",
         },
-        body: undefined,
       })
       .next(response)
       .call(promiseJson, response)
