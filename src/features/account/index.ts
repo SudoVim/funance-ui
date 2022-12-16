@@ -1,5 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "app/store";
+import { combineReducers } from "redux";
+import { createEndpointSlice, rawRequest } from "features/api";
+import { EndpointAction } from "features/api/endpoint";
+import { APIResponse } from "features/api/request";
+import { call, takeEvery, put } from "redux-saga/effects";
 
 export type AccountState = {
   initialized: boolean;
@@ -7,23 +10,41 @@ export type AccountState = {
   isLoggedIn: boolean;
 };
 
-const initialState: AccountState = {
-  initialized: false,
-  isLoggingIn: false,
-  isLoggedIn: false,
+export type LoginRequest = {
+  username: string;
+  password: string;
 };
 
-export const accountSlice = createSlice({
-  name: "account",
-  initialState,
-  reducers: {
-    getAccount: (state) => {},
-  },
+export type LoginResponse = {};
+
+const loginSlice = createEndpointSlice<LoginRequest>("account.login");
+
+export const accountState = combineReducers({
+  login: loginSlice.reducer,
 });
 
 export const selectors = {
-  isLoggedIn: (state: RootState) => state.account.isLoggedIn,
-  state: (state: RootState) => state.account,
+  isLoggedIn: (state: any) => state.account.isLoggedIn,
+  state: (state: any) => state.account,
 };
 
-export default accountSlice.reducer;
+export type LoginAction = EndpointAction<LoginRequest>;
+
+export const actions = {
+  login: (request: LoginRequest) => loginSlice.actions.request(request),
+};
+
+export function* login({ payload: request }: LoginAction) {
+  const response: APIResponse = yield call(rawRequest, {
+    path: "/accounts/login",
+    method: "POST",
+    body: request,
+  });
+  yield put(loginSlice.actions.finish(response));
+}
+
+export function* sagas() {
+  yield takeEvery("account.login/request", login);
+}
+
+export default accountState;
