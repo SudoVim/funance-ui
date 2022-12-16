@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import HeaderBar from "./HeaderBar";
 
@@ -21,17 +21,19 @@ export const Top: React.FC<Props> = () => {
           <HeaderBar />
         </Grid>
         <Grid item xs={12}>
-          <Box
-            sx={{
-              display: "flex",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              background: theme.palette.background.default,
-            }}
-          >
-            <Outlet />
-          </Box>
+          <Container maxWidth="sm">
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+                background: theme.palette.background.default,
+              }}
+            >
+              <Outlet />
+            </Box>
+          </Container>
         </Grid>
       </Grid>
     </Box>
