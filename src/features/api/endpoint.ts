@@ -31,6 +31,10 @@ export type ErrorEndpoint<E> = {
 
 export type FilledEndpoint<T, E> = SuccessfulEndpoint<T> | ErrorEndpoint<E>;
 
+export type DefaultError = {
+  non_field_errors?: Array<string>;
+};
+
 export type Endpoint<T, E = unknown> =
   | EmptyEndpoint
   | LoadingEndpoint
@@ -63,7 +67,7 @@ export function createEndpointSlice<R>(name: string) {
     name,
     initialState: initialEndpoint,
     reducers: {
-      clear: (state, action: PayloadAction<R>) => emptyEndpoint,
+      clear: (state) => emptyEndpoint,
       request: (state, action: PayloadAction<R>) => loadingEndpoint,
       finish: (state, action: PayloadAction<APIResponse>) => {
         const { payload: response } = action;

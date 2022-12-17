@@ -26,12 +26,13 @@ export const accountState = combineReducers({
 export const selectors = {
   isLoggedIn: (state: any) => state.account.isLoggedIn,
   state: (state: any) => state.account,
+  login: (state: any) => state.account.login,
 };
 
 export type LoginAction = EndpointAction<LoginRequest>;
 
 export const actions = {
-  login: (request: LoginRequest) => loginSlice.actions.request(request),
+  login: loginSlice.actions,
 };
 
 export function* login({ payload: request }: LoginAction) {
