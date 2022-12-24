@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { APIResponse } from "./request";
+import { APIResponse, DefaultError } from "./request";
 
 export type EmptyEndpoint = {
   isEmpty: true;
@@ -31,58 +31,62 @@ export type ErrorEndpoint<E> = {
 
 export type FilledEndpoint<T, E> = SuccessfulEndpoint<T> | ErrorEndpoint<E>;
 
-export type DefaultError = {
-  non_field_errors?: Array<string>;
-};
-
-export type Endpoint<T, E = unknown> =
+export type Endpoint<T = unknown, E = DefaultError> =
   | EmptyEndpoint
   | LoadingEndpoint
   | FilledEndpoint<T, E>;
 
 export type EndpointAction<R> = PayloadAction<R>;
 
-export const emptyEndpoint = {
+export const emptyEndpoint: EmptyEndpoint = {
   isEmpty: true,
   isLoading: false,
   isFilled: false,
 };
 
-export const loadingEndpoint = {
+export const loadingEndpoint: LoadingEndpoint = {
   isEmpty: false,
   isLoading: true,
   isFilled: false,
 };
 
-const filledEndpoint = {
-  isEmpty: false,
-  isLoading: false,
-  isFilled: true,
-};
+export const initialEndpoint: Endpoint = emptyEndpoint;
 
-export const initialEndpoint = emptyEndpoint;
-
-export function createEndpointSlice<R>(name: string) {
+export function createEndpointSlice<
+  R = undefined,
+  T = undefined,
+  E = DefaultError
+>(name: string) {
   return createSlice({
     name,
     initialState: initialEndpoint,
     reducers: {
-      clear: (state) => emptyEndpoint,
-      request: (state, action: PayloadAction<R>) => loadingEndpoint,
-      finish: (state, action: PayloadAction<APIResponse>) => {
+      clear: (state: any): Endpoint<T, E> => emptyEndpoint,
+      request: (state: any, action: PayloadAction<R>): Endpoint<T, E> =>
+        loadingEndpoint,
+      finish: (
+        state: any,
+        action: PayloadAction<APIResponse<T, E>>
+      ): Endpoint<T, E> => {
         const { payload: response } = action;
         if (!response.success) {
+          const { errorData } = response;
           return {
-            ...filledEndpoint,
+            isEmpty: false,
+            isLoading: false,
+            isFilled: true,
             success: false,
-            errorData: response.data,
+            errorData,
           };
         }
 
+        const { data } = response;
         return {
-          ...filledEndpoint,
+          isEmpty: false,
+          isLoading: false,
+          isFilled: true,
           success: true,
-          data: response.data,
+          data,
         };
       },
     },

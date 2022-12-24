@@ -36,7 +36,7 @@ export const actions = {
 };
 
 export function* login({ payload: request }: LoginAction) {
-  const response: APIResponse = yield call(rawRequest, {
+  const response: APIResponse<any> = yield call(rawRequest, {
     path: "/accounts/login",
     method: "POST",
     body: request,

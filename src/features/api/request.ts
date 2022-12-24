@@ -1,7 +1,8 @@
 import { call } from "redux-saga/effects";
 
 export const API_URL = process.env.API_URL ?? "http://localhost:8005/api/v1/";
-export const API_CROSS_SITE = process.env.API_CROSS_SITE === "true";
+export const API_CROSS_SITE =
+  process.env.NODE_ENV !== "test" && process.env.API_CROSS_SITE === "true";
 
 function pathToURL(path: string): string {
   if (path.startsWith(API_URL)) {
@@ -13,26 +14,41 @@ function pathToURL(path: string): string {
   }
 }
 
-export type APIResponse = {
-  request: APIRequest;
-  status: number;
-  success: boolean;
-  data?: object;
+export type DefaultError = {
+  non_field_errors?: Array<string>;
 };
 
-export type APIRequest = {
+export type APISuccessResponse<T = undefined> = {
+  status: number;
+  success: true;
+  data: T;
+};
+
+export type APIErrorResponse<E = DefaultError> = {
+  status: number;
+  success: false;
+  errorData: E;
+};
+
+export type APIResponse<T, E = DefaultError> =
+  | APISuccessResponse<T>
+  | APIErrorResponse<E>;
+
+export type APIRequest<R = undefined> = {
   path: string;
   method: string;
-  body?: object;
+  body: R;
 };
 
 export function promiseJson(response: Response) {
   return response.json();
 }
 
-export function* rawRequest(request: APIRequest) {
+export function* rawRequest<R = undefined, T = undefined, E = DefaultError>(
+  request: APIRequest<R>
+): Generator<any, APIResponse<T, E>, any> {
   const { path, method, body } = request;
-  const headers: any = {
+  const headers: Object = {
     Accept: "application/json",
   };
   const opts: any = {
@@ -55,10 +71,11 @@ export function* rawRequest(request: APIRequest) {
 
   const { status } = response;
   const success = status >= 200 && status < 300;
-  if (status === 204) {
-    return { request, status, success };
+  if (!success) {
+    const errorData: E = yield call(promiseJson, response);
+    return { status, success, errorData };
   }
 
-  const data: Object = yield call(promiseJson, response);
-  return { request, status, success, data };
+  const data: T = yield call(promiseJson, response);
+  return { status, success, data };
 }
