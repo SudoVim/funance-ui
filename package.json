@@ -31,6 +31,11 @@
     "eject": "react-scripts eject",
     "format": "node_modules/prettier/bin-prettier.js --write 'src/**/*.ts' 'src/**/*.tsx'"
   },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -50,7 +55,9 @@
     ]
   },
   "devDependencies": {
+    "@cfaester/enzyme-adapter-react-18": "^0.6.0",
     "@types/react-router-redux": "^5.0.21",
+    "enzyme-to-json": "^3.6.2",
     "prettier": "^2.7.1",
     "redux-saga-test-plan": "^4.0.5"
   }
