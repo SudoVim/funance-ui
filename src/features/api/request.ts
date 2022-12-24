@@ -48,7 +48,7 @@ export function* rawRequest<R = undefined, T = undefined, E = DefaultError>(
   request: APIRequest<R>
 ): Generator<any, APIResponse<T, E>, any> {
   const { path, method, body } = request;
-  const headers: Object = {
+  const headers: Record<string, string> = {
     Accept: "application/json",
   };
   const opts: any = {
