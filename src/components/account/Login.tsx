@@ -5,16 +5,27 @@ import { useTheme } from "@mui/material/styles";
 import { actions, selectors } from "features";
 import { FormGrid, Submit } from "components/utils/forms";
 import { EndpointAlert } from "components/utils/alerts";
+import { useNavigate } from "react-router";
 
 export type Props = {};
 
 export const Login: React.FC<Props> = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const loginState = useSelector(selectors.account.login);
+  const hasAuth = useSelector(selectors.api.hasAuth);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const loginDisabled = !username || !password;
+
+  useEffect(() => {
+    if (hasAuth) {
+      navigate("/");
+    }
+  }, [hasAuth, navigate]);
 
   useEffect(() => {
     dispatch(actions.account.login.clear());

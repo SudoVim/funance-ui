@@ -66,17 +66,17 @@ export function createEndpointSlice<
         loadingEndpoint,
       finish: (
         state: any,
-        action: PayloadAction<APIResponse<T, E>>
+        action: PayloadAction<APIResponse>
       ): Endpoint<T, E> => {
         const { payload: response } = action;
         if (!response.success) {
-          const { errorData } = response;
+          const { data } = response;
           return {
             isEmpty: false,
             isLoading: false,
             isFilled: true,
             success: false,
-            errorData,
+            errorData: data,
           };
         }
 

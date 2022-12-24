@@ -1,6 +1,7 @@
 import React from "react";
 import { Endpoint } from "features/api/endpoint";
 import { Snackbar, Alert } from "@mui/material";
+import { getError } from "features/api/request";
 
 export type Props = {
   endpoint: Endpoint<unknown>;
@@ -14,7 +15,7 @@ export const EndpointAlert: React.FC<Props> = ({
   const message = endpoint.isFilled
     ? endpoint.success
       ? successMessage ?? "Success!"
-      : endpoint.errorData.non_field_errors?.[0] ?? "An error occurred."
+      : getError(endpoint.errorData) ?? "An error occurred."
     : undefined;
   const open = endpoint.isFilled && message !== undefined;
   const severity = endpoint.isFilled && endpoint.success ? "success" : "error";

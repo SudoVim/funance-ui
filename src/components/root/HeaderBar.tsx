@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import { Box, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { selectors } from "features";
-import LoginButton from "./LoginButton";
+import { LoginButton } from "./LoginButton";
+import { LogoutButton } from "./LogoutButton";
 
 export function HeaderBar() {
   const theme = useTheme();
@@ -39,7 +40,7 @@ export function HeaderBar() {
               marginRight: "20px",
             }}
           >
-            {hasAuth ? null : <LoginButton />}
+            {hasAuth ? <LogoutButton /> : <LoginButton />}
           </Box>
         </Grid>
       </Grid>

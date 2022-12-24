@@ -10,5 +10,3 @@ export function LoginButton() {
     </Box>
   );
 }
-
-export default LoginButton;

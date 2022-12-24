@@ -15,42 +15,39 @@ function pathToURL(path: string): string {
 }
 
 export type DefaultError = {
+  detail?: string;
   non_field_errors?: Array<string>;
 };
 
-export type APISuccessResponse<T = undefined> = {
+export function getError(error: DefaultError): string | undefined {
+  return error.detail ?? error.non_field_errors?.[0];
+}
+
+export type APIResponse = {
   status: number;
-  success: true;
-  data: T;
+  success: boolean;
+  data?: any;
 };
 
-export type APIErrorResponse<E = DefaultError> = {
-  status: number;
-  success: false;
-  errorData: E;
-};
-
-export type APIResponse<T, E = DefaultError> =
-  | APISuccessResponse<T>
-  | APIErrorResponse<E>;
-
-export type APIRequest<R = undefined> = {
+export type APIRequest = {
   path: string;
   method: string;
-  body: R;
+  headers?: Record<string, string>;
+  body?: object;
 };
 
 export function promiseJson(response: Response) {
   return response.json();
 }
 
-export function* rawRequest<R = undefined, T = undefined, E = DefaultError>(
-  request: APIRequest<R>
-): Generator<any, APIResponse<T, E>, any> {
+export function* rawRequest(
+  request: APIRequest
+): Generator<any, APIResponse, any> {
   const { path, method, body } = request;
-  const headers: Record<string, string> = {
-    Accept: "application/json",
-  };
+  const headers: Record<string, string> = request.headers ?? {};
+  if (!headers.Accept) {
+    headers.Accept = "application/json";
+  }
   const opts: any = {
     method,
     headers,
@@ -71,11 +68,39 @@ export function* rawRequest<R = undefined, T = undefined, E = DefaultError>(
 
   const { status } = response;
   const success = status >= 200 && status < 300;
-  if (!success) {
-    const errorData: E = yield call(promiseJson, response);
-    return { status, success, errorData };
+  if (success && status === 204) {
+    return { status, success };
   }
 
-  const data: T = yield call(promiseJson, response);
+  const data = yield call(promiseJson, response);
   return { status, success, data };
+}
+
+export type APIAuth = {
+  token?: string;
+  expiry?: string;
+};
+
+export var apiAuth: APIAuth = {
+  token: localStorage.getItem("auth.token") || undefined,
+  expiry: localStorage.getItem("auth.expiry") || undefined,
+};
+
+export function setAuth(auth: APIAuth) {
+  localStorage.setItem("auth.token", auth.token ?? "");
+  localStorage.setItem("auth.expiry", auth.expiry ?? "");
+  apiAuth = auth;
+}
+
+export function* authRequest(
+  request: APIRequest
+): Generator<any, APIResponse, any> {
+  const headers: Record<string, string> = request.headers ?? {};
+  if (!headers["Authorization"]) {
+    headers["Authorization"] = `Token ${apiAuth.token}`;
+  }
+  return yield call(rawRequest, {
+    ...request,
+    headers,
+  });
 }
