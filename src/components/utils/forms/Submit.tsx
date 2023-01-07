@@ -3,13 +3,18 @@ import { Button } from "@mui/material";
 
 export type Props = {
   disabled: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   text: string;
 };
 
 export const Submit: React.FC<Props> = ({ disabled, onClick, text }) => {
   return (
-    <Button variant="contained" disabled={disabled} onClick={onClick}>
+    <Button
+      type="submit"
+      variant="contained"
+      disabled={disabled}
+      onClick={onClick}
+    >
       {text}
     </Button>
   );

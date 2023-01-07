@@ -43,36 +43,38 @@ export const Login: React.FC<Props> = () => {
         borderRadius: "10px",
       }}
     >
-      <FormGrid>
-        <Typography variant="h3" color={theme.palette.text.primary}>
-          Login!
-        </Typography>
-        <TextField
-          id="outlined-basic"
-          label="Username"
-          variant="outlined"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Password"
-          type="password"
-          variant="outlined"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Submit
-          disabled={loginDisabled}
-          onClick={() => {
-            dispatch(
-              actions.account.login.request({
-                username,
-                password,
-              })
-            );
-          }}
-          text="Login"
-        />
-      </FormGrid>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          dispatch(
+            actions.account.login.request({
+              username,
+              password,
+            })
+          );
+        }}
+      >
+        <FormGrid>
+          <Typography variant="h3" color={theme.palette.text.primary}>
+            Login!
+          </Typography>
+          <TextField
+            id="outlined-basic"
+            label="Username"
+            variant="outlined"
+            onChange={(e) => setUsername(e.target.value)}
+            autoFocus
+          />
+          <TextField
+            id="outlined-basic"
+            label="Password"
+            type="password"
+            variant="outlined"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Submit disabled={loginDisabled} text="Login" />
+        </FormGrid>
+      </form>
       <EndpointAlert endpoint={loginState} />
     </Box>
   );
