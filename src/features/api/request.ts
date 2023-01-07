@@ -1,8 +1,10 @@
 import { call } from "redux-saga/effects";
 
-export const API_URL = process.env.API_URL ?? "http://localhost:8005/api/v1/";
+export const API_URL =
+  process.env.REACT_APP_API_URL ?? "http://localhost:8005/api/v1/";
 export const API_CROSS_SITE =
-  process.env.NODE_ENV !== "test" && process.env.API_CROSS_SITE === "true";
+  process.env.NODE_ENV !== "test" &&
+  process.env.REACT_APP_API_CROSS_SITE === "true";
 
 function pathToURL(path: string): string {
   if (path.startsWith(API_URL)) {
