@@ -13,7 +13,7 @@ export function LogoutButton() {
 
   useEffect(
     () => () => {
-      dispatch(actions.account.logout.clear());
+      dispatch(actions.account.logout.clear(undefined));
     },
     [dispatch]
   );
@@ -25,7 +25,7 @@ export function LogoutButton() {
           color: theme.palette.text.primary,
           "&:hover": { cursor: "pointer" },
         }}
-        onClick={() => dispatch(actions.account.logout.request())}
+        onClick={() => dispatch(actions.account.logout.request(undefined))}
       >
         logout
       </Box>

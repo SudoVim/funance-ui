@@ -1,4 +1,8 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  SliceCaseReducers,
+} from "@reduxjs/toolkit";
 import { APIResponse, DefaultError } from "./request";
 
 export type EmptyEndpoint = {
@@ -50,16 +54,14 @@ export const loadingEndpoint: LoadingEndpoint = {
   isFilled: false,
 };
 
-export const initialEndpoint: Endpoint = emptyEndpoint;
-
 export function createEndpointSlice<
   R = undefined,
   T = undefined,
   E = DefaultError
 >(name: string) {
-  return createSlice({
+  return createSlice<Endpoint<T, E>, SliceCaseReducers<Endpoint<T, E>>>({
     name,
-    initialState: initialEndpoint,
+    initialState: emptyEndpoint,
     reducers: {
       clear: (state: any): Endpoint<T, E> => emptyEndpoint,
       request: (state: any, action: PayloadAction<R>): Endpoint<T, E> =>
