@@ -104,7 +104,7 @@ export function* requireAccount() {
     return;
   }
 
-  yield put(actions.account.request());
+  yield put(actions.account.request(undefined));
 }
 
 export function* sagas() {

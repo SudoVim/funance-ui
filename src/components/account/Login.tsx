@@ -28,7 +28,7 @@ export const Login: React.FC<Props> = () => {
   }, [hasAuth, navigate]);
 
   useEffect(() => {
-    dispatch(actions.account.login.clear());
+    dispatch(actions.account.login.clear(undefined));
   }, [dispatch]);
 
   return (
