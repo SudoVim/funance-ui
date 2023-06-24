@@ -29,7 +29,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "node_modules/prettier/bin-prettier.js --write 'src/**/*.ts' 'src/**/*.tsx'"
+    "format": "node_modules/prettier/bin-prettier.js --write 'src/**/*.ts' 'src/**/*.tsx'",
+    "check-format": "node_modules/prettier/bin-prettier.js --check 'src/**/*.ts' 'src/**/*.tsx'"
   },
   "jest": {
     "snapshotSerializers": [
