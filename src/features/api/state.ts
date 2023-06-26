@@ -19,6 +19,8 @@ export const apiSlice = createSlice({
   },
 });
 
+export const state = apiSlice.reducer;
+
 export const { actions } = apiSlice;
 
 export const selectors = {
