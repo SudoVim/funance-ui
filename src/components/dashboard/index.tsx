@@ -23,6 +23,12 @@ export const Dashboard: React.FC<Props> = () => {
     dispatch(actions.account.requireAccount());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (accountEndpoint?.isFilled && accountEndpoint.success) {
+      dispatch(actions.holdings.accounts.list.request({}));
+    }
+  }, [dispatch, accountEndpoint]);
+
   if (!accountEndpoint.isFilled) {
     return null;
   }
