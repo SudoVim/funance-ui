@@ -11,6 +11,8 @@ type Holding = {
 
 export const endpoints = {
   accounts: {
-    list: createEndpointSlice<ListRequest, Holding>("holdings.accounts.list"),
+    list: createEndpointSlice<ListRequest, Holding>({
+      name: "holdings.accounts.list",
+    }),
   },
 };

@@ -54,11 +54,20 @@ export const loadingEndpoint: LoadingEndpoint = {
   isFilled: false,
 };
 
+export type EndpointProps = {
+  name: string;
+};
+
+export type EndpointResponse<R = undefined> = {
+  request: R;
+  response: APIResponse;
+};
+
 export function createEndpointSlice<
   R = undefined,
   T = undefined,
   E = DefaultError
->(name: string) {
+>({ name }: EndpointProps) {
   return createSlice<Endpoint<T, E>, SliceCaseReducers<Endpoint<T, E>>>({
     name,
     initialState: emptyEndpoint,
@@ -68,9 +77,10 @@ export function createEndpointSlice<
         loadingEndpoint,
       finish: (
         state: any,
-        action: PayloadAction<APIResponse>
+        action: PayloadAction<EndpointResponse<R>>
       ): Endpoint<T, E> => {
-        const { payload: response } = action;
+        const { payload: endpointResponse } = action;
+        const { response } = endpointResponse;
         if (!response.success) {
           const { data } = response;
           return {
@@ -89,6 +99,72 @@ export function createEndpointSlice<
           isFilled: true,
           success: true,
           data,
+        };
+      },
+    },
+  });
+}
+
+export type IndirectEndpointProps<R> = EndpointProps & {
+  getKeyFromRequest: (request: R) => string;
+};
+
+export type IndirectEndpoint<T = undefined, E = DefaultError> = Record<
+  string,
+  Endpoint<T, E>
+>;
+
+export function createIndirectEndpointSlice<
+  R = undefined,
+  T = undefined,
+  E = DefaultError
+>({ name, getKeyFromRequest }: IndirectEndpointProps<R>) {
+  // This "naive" slice represents the state mechanism for each of the
+  // underlying "indirect" items.
+  const naiveSlice = createEndpointSlice<R, T, E>({ name });
+  return createSlice<
+    IndirectEndpoint<T, E>,
+    SliceCaseReducers<IndirectEndpoint<T, E>>
+  >({
+    name,
+    initialState: {},
+    reducers: {
+      clear: (
+        state: any,
+        action: PayloadAction<R | undefined>
+      ): IndirectEndpoint<T, E> => {
+        const { payload: request } = action;
+        if (!request) {
+          return {};
+        }
+
+        const key = getKeyFromRequest(request);
+        return {
+          ...state,
+          [key]: naiveSlice.reducer(state[key] ?? emptyEndpoint, action),
+        };
+      },
+      request: (
+        state: any,
+        action: PayloadAction<R>
+      ): IndirectEndpoint<T, E> => {
+        const { payload: request } = action;
+        const key = getKeyFromRequest(request);
+        return {
+          ...state,
+          [key]: naiveSlice.reducer(state[key] ?? emptyEndpoint, action),
+        };
+      },
+      finish: (
+        state: any,
+        action: PayloadAction<EndpointResponse<R>>
+      ): IndirectEndpoint<T, E> => {
+        const { payload: endpointResponse } = action;
+        const { request } = endpointResponse;
+        const key = getKeyFromRequest(request);
+        return {
+          ...state,
+          [key]: naiveSlice.reducer(state[key] ?? emptyEndpoint, action),
         };
       },
     },

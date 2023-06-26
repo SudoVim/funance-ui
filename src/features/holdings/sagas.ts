@@ -8,7 +8,7 @@ export function* list() {
     path: "/holding_accounts",
     method: "GET",
   });
-  yield put(endpoints.accounts.list.actions.finish(response));
+  yield put(endpoints.accounts.list.actions.finish({ response }));
 }
 
 export function* sagas() {
