@@ -1,7 +1,7 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import { sagas } from "./sagas";
-import { state } from 'features';
+import { state } from "features";
 
 const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
