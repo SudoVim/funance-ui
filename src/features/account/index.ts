@@ -34,7 +34,7 @@ export type Account = {
 
 const accountSlice = createEndpointSlice<undefined, Account>("account.account");
 
-export const accountState = combineReducers({
+export const state = combineReducers({
   login: loginSlice.reducer,
   logout: logoutSlice.reducer,
   account: accountSlice.reducer,
@@ -113,5 +113,3 @@ export function* sagas() {
   yield takeEvery("account.account/request", account);
   yield takeEvery("account.requireAccount", requireAccount);
 }
-
-export default accountState;
