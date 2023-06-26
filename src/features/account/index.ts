@@ -20,10 +20,10 @@ export type LoginResponse = {
   token: string;
 };
 
-const loginSlice = createEndpointSlice<LoginRequest, LoginResponse>(
-  "account.login"
-);
-const logoutSlice = createEndpointSlice("account.logout");
+const loginSlice = createEndpointSlice<LoginRequest, LoginResponse>({
+  name: "account.login",
+});
+const logoutSlice = createEndpointSlice({ name: "account.logout" });
 
 export type Account = {
   email: string;
@@ -32,7 +32,9 @@ export type Account = {
   username: string;
 };
 
-const accountSlice = createEndpointSlice<undefined, Account>("account.account");
+const accountSlice = createEndpointSlice<undefined, Account>({
+  name: "account.account",
+});
 
 export const state = combineReducers({
   login: loginSlice.reducer,
@@ -63,7 +65,7 @@ export function* login({ payload: request }: LoginAction) {
     method: "POST",
     body: request,
   });
-  yield put(loginSlice.actions.finish(response));
+  yield put(loginSlice.actions.finish({ request, response }));
   if (response.success) {
     yield put(apiActions.setAuth(response.data));
   }
@@ -74,7 +76,7 @@ export function* logout() {
     path: "/accounts/logout",
     method: "POST",
   });
-  yield put(logoutSlice.actions.finish(response));
+  yield put(logoutSlice.actions.finish({ response }));
   yield put(apiActions.setAuth({}));
 }
 
@@ -83,7 +85,7 @@ export function* account() {
     path: "/accounts/account",
     method: "GET",
   });
-  yield put(accountSlice.actions.finish(response));
+  yield put(accountSlice.actions.finish({ response }));
   if (!response.success && response.status === 401) {
     yield put(apiActions.setAuth({}));
   }

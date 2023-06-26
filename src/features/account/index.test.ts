@@ -17,7 +17,7 @@ describe("account saga", () => {
       .next(response)
       .put({
         type: "account.account/finish",
-        payload: response,
+        payload: { response },
       })
       .next()
       .isDone();
@@ -37,7 +37,7 @@ describe("account saga", () => {
       .next(response)
       .put({
         type: "account.account/finish",
-        payload: response,
+        payload: { response },
       })
       .next()
       .isDone();
@@ -57,7 +57,7 @@ describe("account saga", () => {
       .next(response)
       .put({
         type: "account.account/finish",
-        payload: response,
+        payload: { response },
       })
       .next()
       .put({
