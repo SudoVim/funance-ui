@@ -3,7 +3,7 @@ import {
   PayloadAction,
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
-import { APIResponse, DefaultError } from "./request";
+import { APIResponse, DefaultError } from "../request";
 
 export type EmptyEndpoint = {
   isEmpty: true;
