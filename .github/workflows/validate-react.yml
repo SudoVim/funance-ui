@@ -16,6 +16,6 @@ jobs:
 
     - run: npm ci
     - run: npm run check-format
-    - run: npm run npx vitest run
+    - run: npx vitest run
     - run: npm run build
 
