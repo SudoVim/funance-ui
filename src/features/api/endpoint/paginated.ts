@@ -129,7 +129,7 @@ export function createPaginatedEndpointSlice<
 
   const { reducer, actions } = slice;
   function* handleResponse({ request, response }: EndpointResponse<R>) {
-    yield put(actions.finish({ request, response }));
+    yield put(actions.finishPage({ request, response }));
 
     const { callback } = request;
     if (callback) {

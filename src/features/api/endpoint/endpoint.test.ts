@@ -1,10 +1,11 @@
-import { it, describe, expect } from "vitest";
+import { vi, it, describe, expect } from "vitest";
 import {
   emptyEndpoint,
   loadingEndpoint,
   createEndpointSlice,
   createIndirectEndpointSlice,
 } from "./endpoint";
+import { testSaga } from "redux-saga-test-plan";
 
 const filledEndpoint = {
   isEmpty: false,
@@ -84,6 +85,36 @@ describe("test createEndpointSlice", () => {
         isLoading: false,
         success: true,
       });
+    });
+  });
+  describe("test handleResponse", () => {
+    it("finishes without callback", () => {
+      const request = {};
+      const response = {};
+      const saga = slice.handleResponse;
+      testSaga(saga, { request, response })
+        .next()
+        .put({
+          type: "test-slice/finish",
+          payload: { request, response },
+        })
+        .next()
+        .isDone();
+    });
+    it("finishes with callback", () => {
+      const request = { callback: vi.fn() };
+      const response = {};
+      const saga = slice.handleResponse;
+      testSaga(saga, { request, response })
+        .next()
+        .put({
+          type: "test-slice/finish",
+          payload: { request, response },
+        })
+        .next()
+        .call(request.callback, response)
+        .next()
+        .isDone();
     });
   });
 });
@@ -201,6 +232,36 @@ describe("test createIndirectEndpointSlice", () => {
           success: true,
         },
       });
+    });
+  });
+  describe("test handleResponse", () => {
+    it("finishes without callback", () => {
+      const request = {};
+      const response = {};
+      const saga = slice.handleResponse;
+      testSaga(saga, { request, response })
+        .next()
+        .put({
+          type: "test-slice/finish",
+          payload: { request, response },
+        })
+        .next()
+        .isDone();
+    });
+    it("finishes with callback", () => {
+      const request = { callback: vi.fn() };
+      const response = {};
+      const saga = slice.handleResponse;
+      testSaga(saga, { request, response })
+        .next()
+        .put({
+          type: "test-slice/finish",
+          payload: { request, response },
+        })
+        .next()
+        .call(request.callback, response)
+        .next()
+        .isDone();
     });
   });
 });
