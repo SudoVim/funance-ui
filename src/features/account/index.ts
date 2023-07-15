@@ -6,11 +6,15 @@ import {
   selectors as apiSelectors,
   actions as apiActions,
 } from "features/api";
-import { EndpointAction, Endpoint } from "features/api/endpoint";
+import {
+  EndpointAction,
+  Endpoint,
+  EndpointRequest,
+} from "features/api/endpoint";
 import { APIResponse } from "features/api/request";
 import { call, takeEvery, put, select } from "redux-saga/effects";
 
-export type LoginRequest = {
+export type LoginRequest = EndpointRequest & {
   username: string;
   password: string;
 };
@@ -32,7 +36,7 @@ export type Account = {
   username: string;
 };
 
-const accountSlice = createEndpointSlice<undefined, Account>({
+export const accountSlice = createEndpointSlice<EndpointRequest, Account>({
   name: "account.account",
 });
 
@@ -65,27 +69,27 @@ export function* login({ payload: request }: LoginAction) {
     method: "POST",
     body: request,
   });
-  yield put(loginSlice.actions.finish({ request, response }));
+  yield call(loginSlice.handleResponse, { request, response });
   if (response.success) {
     yield put(apiActions.setAuth(response.data));
   }
 }
 
-export function* logout() {
+export function* logout({ payload: request }: EndpointAction) {
   const response: APIResponse = yield call(authRequest, {
     path: "/accounts/logout",
     method: "POST",
   });
-  yield put(logoutSlice.actions.finish({ response }));
+  yield call(logoutSlice.handleResponse, { request, response });
   yield put(apiActions.setAuth({}));
 }
 
-export function* account() {
+export function* account({ payload: request }: EndpointAction) {
   const response: APIResponse = yield call(authRequest, {
     path: "/accounts/account",
     method: "GET",
   });
-  yield put(accountSlice.actions.finish({ response }));
+  yield call(accountSlice.handleResponse, { request, response });
   if (!response.success && response.status === 401) {
     yield put(apiActions.setAuth({}));
   }
@@ -106,7 +110,7 @@ export function* requireAccount() {
     return;
   }
 
-  yield put(actions.account.request(undefined));
+  yield put(actions.account.request({}));
 }
 
 export function* sagas() {

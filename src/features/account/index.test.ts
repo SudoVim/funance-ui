@@ -1,64 +1,58 @@
-import { account, requireAccount, selectors } from "./index";
+import { account, requireAccount, selectors, accountSlice } from "./index";
 import { testSaga } from "redux-saga-test-plan";
 import { authRequest, selectors as apiSelectors } from "features/api";
 
 describe("account saga", () => {
   it("finishes successfully", () => {
     const saga = account;
+    const request = {};
     const response = {
       success: true,
     };
-    testSaga(saga)
+    testSaga(saga, { payload: request })
       .next()
       .call(authRequest, {
         path: "/accounts/account",
         method: "GET",
       })
       .next(response)
-      .put({
-        type: "account.account/finish",
-        payload: { response },
-      })
+      .call(accountSlice.handleResponse, { request, response })
       .next()
       .isDone();
   });
   it("finishes unsuccessfully", () => {
     const saga = account;
+    const request = {};
     const response = {
       success: false,
       status: 500,
     };
-    testSaga(saga)
+    testSaga(saga, { payload: request })
       .next()
       .call(authRequest, {
         path: "/accounts/account",
         method: "GET",
       })
       .next(response)
-      .put({
-        type: "account.account/finish",
-        payload: { response },
-      })
+      .call(accountSlice.handleResponse, { request, response })
       .next()
       .isDone();
   });
   it("finishes unsuccessfully 401", () => {
     const saga = account;
+    const request = {};
     const response = {
       success: false,
       status: 401,
     };
-    testSaga(saga)
+    testSaga(saga, { payload: request })
       .next()
       .call(authRequest, {
         path: "/accounts/account",
         method: "GET",
       })
       .next(response)
-      .put({
-        type: "account.account/finish",
-        payload: { response },
-      })
+      .call(accountSlice.handleResponse, { request, response })
       .next()
       .put({
         type: "api/setAuth",
@@ -120,7 +114,7 @@ describe("requireAccount saga", () => {
       .next(account)
       .put({
         type: "account.account/request",
-        payload: undefined,
+        payload: {},
       })
       .next()
       .isDone();

@@ -25,7 +25,7 @@ export const Dashboard: React.FC<Props> = () => {
 
   useEffect(() => {
     if (accountEndpoint?.isFilled && accountEndpoint.success) {
-      dispatch(actions.holdings.accounts.list.request({}));
+      dispatch(actions.holdings.accounts.list.fetchPage({}));
     }
   }, [dispatch, accountEndpoint]);
 

@@ -114,7 +114,7 @@ describe("Dashboard tests", () => {
     useEffect.mock.calls[2][0]();
     expect(dispatch).toHaveBeenCalledTimes(1);
     expect(dispatch).toHaveBeenLastCalledWith({
-      type: "holdings.accounts.list/request",
+      type: "holdings.accounts.list/fetchPage",
       payload: {},
     });
   });
