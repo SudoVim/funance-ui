@@ -16,29 +16,16 @@
     "react-redux": "^8.1.1",
     "react-router": "^6.14.0",
     "react-router-dom": "^6.14.0",
-    "react-scripts": "5.0.1",
     "redux-saga": "^1.2.3",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest watch",
     "format": "node_modules/prettier/bin-prettier.js --write 'src/**/*.ts' 'src/**/*.tsx'",
     "check-format": "node_modules/prettier/bin-prettier.js --check 'src/**/*.ts' 'src/**/*.tsx'"
-  },
-  "jest": {
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ]
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
@@ -56,11 +43,13 @@
     "@cfaester/enzyme-adapter-react-18": "^0.7.0",
     "@testing-library/react": "^14.0.0",
     "@types/enzyme": "^3.10.13",
-    "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
     "@types/react-router-redux": "^5.0.22",
+    "@vitejs/plugin-react": "^4.0.3",
     "enzyme-to-json": "^3.6.2",
     "prettier": "^2.8.8",
-    "redux-saga-test-plan": "^4.0.6"
+    "redux-saga-test-plan": "^4.0.6",
+    "vite": "^4.4.4",
+    "vitest": "^0.33.0"
   }
 }

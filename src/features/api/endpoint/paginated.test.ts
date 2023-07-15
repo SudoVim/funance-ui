@@ -1,3 +1,4 @@
+import { it, describe, expect } from "vitest";
 import { createPaginatedEndpointSlice } from "./paginated";
 import { emptyEndpoint, loadingEndpoint } from "./endpoint";
 

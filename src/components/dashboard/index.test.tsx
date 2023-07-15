@@ -1,34 +1,27 @@
 import React, { useEffect } from "react";
+import { vi, describe, beforeEach, it, expect } from "vitest";
 import { useDispatch, useSelector } from "react-redux";
 import { shallow } from "enzyme";
 import { useNavigate } from "react-router";
 
 import { Dashboard } from "./index";
 
-jest.mock("react", () => {
-  const react = jest.requireActual("react");
+vi.mock("react", () => {
   return {
-    ...react,
-    useEffect: jest.fn(),
+    useEffect: vi.fn(),
   };
 });
 
-jest.mock("react-redux", () => {
-  const reactRedux = jest.requireActual("react-redux");
-
+vi.mock("react-redux", () => {
   return {
-    ...reactRedux,
-    useDispatch: jest.fn(),
-    useSelector: jest.fn(),
+    useDispatch: vi.fn(),
+    useSelector: vi.fn(),
   };
 });
 
-jest.mock("react-router", () => {
-  const original = jest.requireActual("react-router");
-
+vi.mock("react-router", () => {
   return {
-    ...original,
-    useNavigate: jest.fn(),
+    useNavigate: vi.fn(),
   };
 });
 
@@ -49,8 +42,8 @@ describe("Dashboard tests", () => {
   let dispatch = null;
   let navigate = null;
   beforeEach(() => {
-    dispatch = jest.fn();
-    navigate = jest.fn();
+    dispatch = vi.fn();
+    navigate = vi.fn();
     useEffect.mockReset();
     useDispatch.mockReset();
     useDispatch.mockReturnValue(dispatch);
