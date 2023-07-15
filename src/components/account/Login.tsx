@@ -50,7 +50,7 @@ export const Login: React.FC<Props> = () => {
             actions.account.login.request({
               username,
               password,
-            })
+            }),
           );
         }}
       >

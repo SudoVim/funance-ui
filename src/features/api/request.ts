@@ -43,7 +43,7 @@ export function promiseJson(response: Response) {
 }
 
 export function* rawRequest(
-  request: APIRequest
+  request: APIRequest,
 ): Generator<any, APIResponse, any> {
   const { path, method, body } = request;
   const headers: Record<string, string> = request.headers ?? {};
@@ -95,7 +95,7 @@ export function setAuth(auth: APIAuth) {
 }
 
 export function* authRequest(
-  request: APIRequest
+  request: APIRequest,
 ): Generator<any, APIResponse, any> {
   const headers: Record<string, string> = request.headers ?? {};
   if (!headers["Authorization"]) {

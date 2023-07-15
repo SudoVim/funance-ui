@@ -23,8 +23,8 @@
     "start": "vite",
     "build": "tsc && vite build",
     "test": "vitest watch",
-    "format": "node_modules/prettier/bin-prettier.js --write 'src/**/*.ts' 'src/**/*.tsx'",
-    "check-format": "node_modules/prettier/bin-prettier.js --check 'src/**/*.ts' 'src/**/*.tsx'"
+    "format": "prettier --write 'src/**/*.ts' 'src/**/*.tsx'",
+    "check-format": "prettier --check 'src/**/*.ts' 'src/**/*.tsx'"
   },
   "browserslist": {
     "production": [

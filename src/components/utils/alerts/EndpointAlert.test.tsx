@@ -25,7 +25,7 @@ describe("EndpointAlert tests", () => {
             non_field_errors: [],
           },
         }}
-      />
+      />,
     );
     expect(component.find(Snackbar).props().open).toEqual(true);
     expect(component.find(Alert).props().severity).toEqual("error");
@@ -41,7 +41,7 @@ describe("EndpointAlert tests", () => {
             non_field_errors: ["Error text."],
           },
         }}
-      />
+      />,
     );
     expect(component.find(Snackbar).props().open).toEqual(true);
     expect(component.find(Alert).props().severity).toEqual("error");
@@ -54,7 +54,7 @@ describe("EndpointAlert tests", () => {
           isFilled: true,
           success: true,
         }}
-      />
+      />,
     );
     expect(component.find(Snackbar).props().open).toEqual(true);
     expect(component.find(Alert).props().severity).toEqual("success");
@@ -68,7 +68,7 @@ describe("EndpointAlert tests", () => {
           success: true,
         }}
         successMessage="Endpoint succeeded!"
-      />
+      />,
     );
     expect(component.find(Snackbar).props().open).toEqual(true);
     expect(component.find(Alert).props().severity).toEqual("success");

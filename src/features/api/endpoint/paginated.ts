@@ -22,7 +22,7 @@ export type PaginatedEndpointRequest = EndpointRequest & {
 };
 
 export type PaginatedEndpointAction<
-  R extends PaginatedEndpointRequest = PaginatedEndpointRequest
+  R extends PaginatedEndpointRequest = PaginatedEndpointRequest,
 > = PayloadAction<R>;
 
 export function paginatedSearchParams({ page }: PaginatedEndpointRequest) {
@@ -59,7 +59,7 @@ export type PaginatedEndpointProps = EndpointProps;
 export function createPaginatedEndpointSlice<
   R extends PaginatedEndpointRequest = PaginatedEndpointRequest,
   P = undefined,
-  E = DefaultError
+  E = DefaultError,
 >({ name }: PaginatedEndpointProps) {
   const naiveIndirectSlice = createIndirectEndpointSlice<
     R,
@@ -79,7 +79,7 @@ export function createPaginatedEndpointSlice<
       clear: (state: any): PaginatedEndpoint<P, E> => emptyEndpoint,
       fetchPage: (
         state: any,
-        action: PayloadAction<R>
+        action: PayloadAction<R>,
       ): PaginatedEndpoint<P, E> => {
         const { isFilled } = state;
         if (!isFilled) {
@@ -92,13 +92,13 @@ export function createPaginatedEndpointSlice<
           errorData: undefined,
           pages: naiveIndirectSlice.reducer(
             state.pages ?? {},
-            naiveIndirectSlice.actions.request(request)
+            naiveIndirectSlice.actions.request(request),
           ),
         };
       },
       finishPage: (
         state: any,
-        action: PayloadAction<EndpointResponse<R>>
+        action: PayloadAction<EndpointResponse<R>>,
       ): PaginatedEndpoint<P, E> => {
         const { payload: endpointResponse } = action;
         const { request, response } = endpointResponse;
@@ -112,7 +112,7 @@ export function createPaginatedEndpointSlice<
           naiveIndirectSlice.actions.finish({
             request,
             response,
-          })
+          }),
         );
 
         if (response.success) {
