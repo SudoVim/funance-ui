@@ -1,6 +1,7 @@
-import { it, describe, expect } from "vitest";
+import { vi, it, describe, expect } from "vitest";
 import { createPaginatedEndpointSlice } from "./paginated";
 import { emptyEndpoint, loadingEndpoint } from "./endpoint";
+import { testSaga } from "redux-saga-test-plan";
 
 describe("test createPaginatedEndpointSlice function", () => {
   const testSlice = createPaginatedEndpointSlice({ name: "test-slice" });
@@ -127,6 +128,38 @@ describe("test createPaginatedEndpointSlice function", () => {
           },
         },
       });
+    });
+  });
+  describe("test handleResponse", () => {
+    it("runs handleResponse without a callback", () => {
+      const request = {};
+      const response = {};
+      const saga = testSlice.handleResponse;
+      testSaga(saga, { request, response })
+        .next()
+        .put({
+          type: "test-slice/finishPage",
+          payload: { request, response },
+        })
+        .next()
+        .isDone();
+    });
+    it("runs handleResponse with a callback", () => {
+      const request = {
+        callback: vi.fn(),
+      };
+      const response = {};
+      const saga = testSlice.handleResponse;
+      testSaga(saga, { request, response })
+        .next()
+        .put({
+          type: "test-slice/finishPage",
+          payload: { request, response },
+        })
+        .next()
+        .call(request.callback, response)
+        .next()
+        .isDone();
     });
   });
 });
