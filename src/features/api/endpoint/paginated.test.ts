@@ -24,14 +24,14 @@ describe("test createPaginatedEndpointSlice function", () => {
     it("fetches the first page from empty", () => {
       const state = testSlice.reducer(
         emptyEndpoint,
-        testSlice.actions.fetchPage({ page: 5 })
+        testSlice.actions.fetchPage({ page: 5 }),
       );
       expect(state).toEqual(loadingEndpoint);
     });
     it("fetches the first page from filled, no page", () => {
       const state = testSlice.reducer(
         filledEndpoint,
-        testSlice.actions.fetchPage({})
+        testSlice.actions.fetchPage({}),
       );
       expect(state).toEqual({
         ...filledEndpoint,
@@ -44,7 +44,7 @@ describe("test createPaginatedEndpointSlice function", () => {
     it("fetches the first page from filled", () => {
       const state = testSlice.reducer(
         filledEndpoint,
-        testSlice.actions.fetchPage({ page: 5 })
+        testSlice.actions.fetchPage({ page: 5 }),
       );
       expect(state).toEqual({
         ...filledEndpoint,
@@ -72,7 +72,7 @@ describe("test createPaginatedEndpointSlice function", () => {
         testSlice.actions.finishPage({
           request,
           response,
-        })
+        }),
       );
       expect(state).toEqual({
         isEmpty: false,
@@ -108,7 +108,7 @@ describe("test createPaginatedEndpointSlice function", () => {
         testSlice.actions.finishPage({
           request,
           response,
-        })
+        }),
       );
       expect(state).toEqual({
         isEmpty: false,

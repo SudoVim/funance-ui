@@ -15,7 +15,7 @@ describe("api state tests", () => {
       apiSlice.actions.setAuth({
         token: "api-token",
         expiry: "api-token-expiry",
-      })
+      }),
     );
     expect(cmpState).toEqual({
       auth: {
@@ -37,7 +37,7 @@ describe("api state tests", () => {
       apiSlice.actions.setAuth({
         token: "api-token-2",
         expiry: "api-token-expiry-2",
-      })
+      }),
     );
     expect(cmpState).toEqual({
       auth: {

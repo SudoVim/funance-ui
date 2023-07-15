@@ -20,14 +20,14 @@ describe("test createEndpointSlice", () => {
     it("clears the state from empty", () => {
       const state = slice.reducer(
         emptyEndpoint,
-        slice.actions.clear(undefined)
+        slice.actions.clear(undefined),
       );
       expect(state).toEqual(emptyEndpoint);
     });
     it("clears the state from filled", () => {
       const state = slice.reducer(
         filledEndpoint,
-        slice.actions.clear(undefined)
+        slice.actions.clear(undefined),
       );
       expect(state).toEqual(emptyEndpoint);
     });
@@ -36,14 +36,14 @@ describe("test createEndpointSlice", () => {
     it("requests the endpoint from empty", () => {
       const state = slice.reducer(
         emptyEndpoint,
-        slice.actions.request(undefined)
+        slice.actions.request(undefined),
       );
       expect(state).toEqual(loadingEndpoint);
     });
     it("requests the endpoint from filled", () => {
       const state = slice.reducer(
         filledEndpoint,
-        slice.actions.request(undefined)
+        slice.actions.request(undefined),
       );
       expect(state).toEqual(loadingEndpoint);
     });
@@ -57,7 +57,7 @@ describe("test createEndpointSlice", () => {
             success: false,
             data: "response-data",
           },
-        })
+        }),
       );
       expect(state).toEqual({
         errorData: "response-data",
@@ -75,7 +75,7 @@ describe("test createEndpointSlice", () => {
             success: true,
             data: "response-data",
           },
-        })
+        }),
       );
       expect(state).toEqual({
         data: "response-data",
@@ -107,7 +107,7 @@ describe("test createIndirectEndpointSlice", () => {
     it("clears the state from filled", () => {
       const state = slice.reducer(
         { "my-key": filledEndpoint },
-        slice.actions.clear()
+        slice.actions.clear(),
       );
       expect(state).toEqual({});
     });
@@ -117,7 +117,7 @@ describe("test createIndirectEndpointSlice", () => {
           "my-first-key": filledEndpoint,
           "my-second-key": filledEndpoint,
         },
-        slice.actions.clear({ key: "my-first-key" })
+        slice.actions.clear({ key: "my-first-key" }),
       );
       expect(state).toEqual({
         "my-first-key": emptyEndpoint,
@@ -131,7 +131,7 @@ describe("test createIndirectEndpointSlice", () => {
         {
           "my-first-key": filledEndpoint,
         },
-        slice.actions.request({ key: "my-second-key" })
+        slice.actions.request({ key: "my-second-key" }),
       );
       expect(state).toEqual({
         "my-first-key": filledEndpoint,
@@ -144,7 +144,7 @@ describe("test createIndirectEndpointSlice", () => {
           "my-first-key": filledEndpoint,
           "my-second-key": filledEndpoint,
         },
-        slice.actions.request({ key: "my-second-key" })
+        slice.actions.request({ key: "my-second-key" }),
       );
       expect(state).toEqual({
         "my-first-key": filledEndpoint,
@@ -164,7 +164,7 @@ describe("test createIndirectEndpointSlice", () => {
             success: false,
             data: "response-data",
           },
-        })
+        }),
       );
       expect(state).toEqual({
         "my-first-key": filledEndpoint,
@@ -189,7 +189,7 @@ describe("test createIndirectEndpointSlice", () => {
             success: true,
             data: "response-data",
           },
-        })
+        }),
       );
       expect(state).toEqual({
         "my-first-key": filledEndpoint,

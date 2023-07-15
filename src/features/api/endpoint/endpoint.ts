@@ -72,7 +72,7 @@ export type EndpointResponse<R = undefined> = {
 export function createEndpointSlice<
   R extends EndpointRequest = EndpointRequest,
   T = undefined,
-  E = DefaultError
+  E = DefaultError,
 >({ name }: EndpointProps) {
   const slice = createSlice<Endpoint<T, E>, SliceCaseReducers<Endpoint<T, E>>>({
     name,
@@ -83,7 +83,7 @@ export function createEndpointSlice<
         loadingEndpoint,
       finish: (
         state: any,
-        action: PayloadAction<EndpointResponse<R>>
+        action: PayloadAction<EndpointResponse<R>>,
       ): Endpoint<T, E> => {
         const { payload: endpointResponse } = action;
         const { response } = endpointResponse;
@@ -135,7 +135,7 @@ export type IndirectEndpoint<T = undefined, E = DefaultError> = Record<
 export function createIndirectEndpointSlice<
   R extends EndpointRequest = EndpointRequest,
   T = undefined,
-  E = DefaultError
+  E = DefaultError,
 >({ name, getKeyFromRequest }: IndirectEndpointProps<R>) {
   // This "naive" slice represents the state mechanism for each of the
   // underlying "indirect" items.
@@ -149,7 +149,7 @@ export function createIndirectEndpointSlice<
     reducers: {
       clear: (
         state: any,
-        action: PayloadAction<R | undefined>
+        action: PayloadAction<R | undefined>,
       ): IndirectEndpoint<T, E> => {
         const { payload: request } = action;
         if (!request) {
@@ -164,7 +164,7 @@ export function createIndirectEndpointSlice<
       },
       request: (
         state: any,
-        action: PayloadAction<R>
+        action: PayloadAction<R>,
       ): IndirectEndpoint<T, E> => {
         const { payload: request } = action;
         const key = getKeyFromRequest(request);
@@ -175,7 +175,7 @@ export function createIndirectEndpointSlice<
       },
       finish: (
         state: any,
-        action: PayloadAction<EndpointResponse<R>>
+        action: PayloadAction<EndpointResponse<R>>,
       ): IndirectEndpoint<T, E> => {
         const { payload: endpointResponse } = action;
         const { request } = endpointResponse;

@@ -15,7 +15,7 @@ export function LogoutButton() {
     () => () => {
       dispatch(actions.account.logout.clear(undefined));
     },
-    [dispatch]
+    [dispatch],
   );
 
   return (
