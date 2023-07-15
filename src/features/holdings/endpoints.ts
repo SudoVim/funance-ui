@@ -1,6 +1,9 @@
-import { createEndpointSlice } from "features/api/endpoint";
+import {
+  createPaginatedEndpointSlice,
+  PaginatedEndpointRequest,
+} from "features/api/endpoint";
 
-export type ListRequest = {};
+export type ListRequest = PaginatedEndpointRequest & {};
 
 type Holding = {
   id: string;
@@ -11,7 +14,7 @@ type Holding = {
 
 export const endpoints = {
   accounts: {
-    list: createEndpointSlice<ListRequest, Holding>({
+    list: createPaginatedEndpointSlice<ListRequest, Holding>({
       name: "holdings.accounts.list",
     }),
   },

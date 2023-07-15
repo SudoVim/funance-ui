@@ -19,22 +19,6 @@ describe("test createPaginatedEndpointSlice function", () => {
       },
     },
   };
-  describe("test fetchFirst", () => {
-    it("fetches the first page from empty", () => {
-      const state = testSlice.reducer(
-        emptyEndpoint,
-        testSlice.actions.fetchFirst(undefined)
-      );
-      expect(state).toEqual(loadingEndpoint);
-    });
-    it("fetches the first page from filled", () => {
-      const state = testSlice.reducer(
-        filledEndpoint,
-        testSlice.actions.fetchFirst(undefined)
-      );
-      expect(state).toEqual(loadingEndpoint);
-    });
-  });
   describe("test fetchPage", () => {
     it("fetches the first page from empty", () => {
       const state = testSlice.reducer(

@@ -12,12 +12,22 @@ import {
   EndpointResponse,
   loadingEndpoint,
   EndpointProps,
+  EndpointRequest,
 } from "./endpoint";
 import { DefaultError } from "../request";
+import { call, put } from "redux-saga/effects";
 
-export type PaginatedEndpointRequest = {
+export type PaginatedEndpointRequest = EndpointRequest & {
   page?: number;
 };
+
+export type PaginatedEndpointAction<
+  R extends PaginatedEndpointRequest = PaginatedEndpointRequest
+> = PayloadAction<R>;
+
+export function paginatedSearchParams({ page }: PaginatedEndpointRequest) {
+  return new URLSearchParams({ page: `${page ?? 1}` });
+}
 
 export type PaginatedEndpointResponse<P = undefined> = {
   count: number;
@@ -59,7 +69,7 @@ export function createPaginatedEndpointSlice<
     name,
     getKeyFromRequest: ({ page }: PaginatedEndpointRequest) => `${page || 1}`,
   });
-  return createSlice<
+  const slice = createSlice<
     PaginatedEndpoint<P, E>,
     SliceCaseReducers<PaginatedEndpoint<P, E>>
   >({
@@ -67,10 +77,6 @@ export function createPaginatedEndpointSlice<
     initialState: emptyEndpoint,
     reducers: {
       clear: (state: any): PaginatedEndpoint<P, E> => emptyEndpoint,
-      fetchFirst: (
-        state: any,
-        action: PayloadAction<R | undefined>
-      ): PaginatedEndpoint<P, E> => loadingEndpoint,
       fetchPage: (
         state: any,
         action: PayloadAction<R>
@@ -120,4 +126,16 @@ export function createPaginatedEndpointSlice<
       },
     },
   });
+
+  const { reducer, actions } = slice;
+  function* handleResponse({ request, response }: EndpointResponse<R>) {
+    yield put(actions.finish({ request, response }));
+
+    const { callback } = request;
+    if (callback) {
+      yield call(callback, response);
+    }
+  }
+
+  return { reducer, actions, handleResponse };
 }

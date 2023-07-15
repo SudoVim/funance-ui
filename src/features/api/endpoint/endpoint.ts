@@ -4,6 +4,7 @@ import {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 import { APIResponse, DefaultError } from "../request";
+import { call, put } from "redux-saga/effects";
 
 export type EmptyEndpoint = {
   isEmpty: true;
@@ -40,8 +41,6 @@ export type Endpoint<T = unknown, E = DefaultError> =
   | LoadingEndpoint
   | FilledEndpoint<T, E>;
 
-export type EndpointAction<R> = PayloadAction<R>;
-
 export const emptyEndpoint: EmptyEndpoint = {
   isEmpty: true,
   isLoading: false,
@@ -58,17 +57,24 @@ export type EndpointProps = {
   name: string;
 };
 
+export type EndpointRequest = {
+  callback?: (response: APIResponse) => void;
+};
+
+export type EndpointAction<R extends EndpointRequest = EndpointRequest> =
+  PayloadAction<R>;
+
 export type EndpointResponse<R = undefined> = {
   request: R;
   response: APIResponse;
 };
 
 export function createEndpointSlice<
-  R = undefined,
+  R extends EndpointRequest = EndpointRequest,
   T = undefined,
   E = DefaultError
 >({ name }: EndpointProps) {
-  return createSlice<Endpoint<T, E>, SliceCaseReducers<Endpoint<T, E>>>({
+  const slice = createSlice<Endpoint<T, E>, SliceCaseReducers<Endpoint<T, E>>>({
     name,
     initialState: emptyEndpoint,
     reducers: {
@@ -103,6 +109,18 @@ export function createEndpointSlice<
       },
     },
   });
+
+  const { reducer, actions } = slice;
+  function* handleResponse({ request, response }: EndpointResponse<R>) {
+    yield put(actions.finish({ request, response }));
+
+    const { callback } = request;
+    if (callback) {
+      yield call(callback, response);
+    }
+  }
+
+  return { reducer, actions, handleResponse };
 }
 
 export type IndirectEndpointProps<R> = EndpointProps & {
@@ -115,14 +133,14 @@ export type IndirectEndpoint<T = undefined, E = DefaultError> = Record<
 >;
 
 export function createIndirectEndpointSlice<
-  R = undefined,
+  R extends EndpointRequest = EndpointRequest,
   T = undefined,
   E = DefaultError
 >({ name, getKeyFromRequest }: IndirectEndpointProps<R>) {
   // This "naive" slice represents the state mechanism for each of the
   // underlying "indirect" items.
   const naiveSlice = createEndpointSlice<R, T, E>({ name });
-  return createSlice<
+  const slice = createSlice<
     IndirectEndpoint<T, E>,
     SliceCaseReducers<IndirectEndpoint<T, E>>
   >({
@@ -169,4 +187,16 @@ export function createIndirectEndpointSlice<
       },
     },
   });
+
+  const { reducer, actions } = slice;
+  function* handleResponse({ request, response }: EndpointResponse<R>) {
+    yield put(actions.finish({ request, response }));
+
+    const { callback } = request;
+    if (callback) {
+      yield call(callback, response);
+    }
+  }
+
+  return { reducer, actions, handleResponse };
 }
