@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { vi, describe, beforeEach, it, expect } from "vitest";
 import { useDispatch, useSelector } from "react-redux";
 import { shallow } from "enzyme";
 import { emptyEndpoint } from "features/api/endpoint";
@@ -6,21 +7,16 @@ import { Box } from "@mui/material";
 
 import { LogoutButton } from "./LogoutButton";
 
-jest.mock("react", () => {
-  const react = jest.requireActual("react");
+vi.mock("react", () => {
   return {
-    ...react,
-    useEffect: jest.fn(),
+    useEffect: vi.fn(),
   };
 });
 
-jest.mock("react-redux", () => {
-  const reactRedux = jest.requireActual("react-redux");
-
+vi.mock("react-redux", () => {
   return {
-    ...reactRedux,
-    useDispatch: jest.fn(),
-    useSelector: jest.fn(),
+    useDispatch: vi.fn(),
+    useSelector: vi.fn(),
   };
 });
 
@@ -38,7 +34,7 @@ function mockSelector({ loginState }) {
 describe("LogoutButton tests", () => {
   let dispatch = null;
   beforeEach(() => {
-    dispatch = jest.fn();
+    dispatch = vi.fn();
     useEffect.mockReset();
     useDispatch.mockReset();
     useDispatch.mockReturnValue(dispatch);

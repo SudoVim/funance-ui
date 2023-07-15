@@ -1,3 +1,4 @@
+import { describe, it } from "vitest";
 import { account, requireAccount, selectors, accountSlice } from "./index";
 import { testSaga } from "redux-saga-test-plan";
 import { authRequest, selectors as apiSelectors } from "features/api";
