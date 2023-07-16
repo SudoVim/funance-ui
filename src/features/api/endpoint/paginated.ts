@@ -20,7 +20,7 @@ import { call, put } from "redux-saga/effects";
 export type PaginatedEndpointRequest = EndpointRequest & {
   url?: string;
   page?: number;
-  fetchAll: boolean;
+  fetchAll?: boolean;
 };
 
 export type PaginatedEndpointAction<
