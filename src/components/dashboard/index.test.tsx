@@ -108,7 +108,7 @@ describe("Dashboard tests", () => {
     expect(dispatch).toHaveBeenCalledTimes(1);
     expect(dispatch).toHaveBeenLastCalledWith({
       type: "holdings.accounts.list/fetchPage",
-      payload: {},
+      payload: { fetchAll: true },
     });
   });
 });
