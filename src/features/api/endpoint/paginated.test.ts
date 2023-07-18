@@ -131,15 +131,41 @@ describe("test createPaginatedEndpointSlice function", () => {
     });
   });
   describe("test handleResponse", () => {
-    it("runs handleResponse without a callback", () => {
+    it("runs handleResponse", () => {
       const request = {};
-      const response = {};
+      const response = {
+        success: true,
+        data: { next: "next-url" },
+      };
       const saga = testSlice.handleResponse;
       testSaga(saga, { request, response })
         .next()
         .put({
           type: "test-slice/finishPage",
           payload: { request, response },
+        })
+        .next()
+        .isDone();
+    });
+    it("runs handleResponse fetches next page", () => {
+      const request = {
+        fetchAll: true,
+      };
+      const response = {
+        success: true,
+        data: { next: "next-url" },
+      };
+      const saga = testSlice.handleResponse;
+      testSaga(saga, { request, response })
+        .next()
+        .put({
+          type: "test-slice/finishPage",
+          payload: { request, response },
+        })
+        .next()
+        .put({
+          type: "test-slice/fetchPage",
+          payload: { ...request, url: "next-url" },
         })
         .next()
         .isDone();
@@ -160,6 +186,19 @@ describe("test createPaginatedEndpointSlice function", () => {
         .call(request.callback, response)
         .next()
         .isDone();
+    });
+  });
+  describe("test fetchAllPages", () => {
+    it("runs fetchAllPages and callback with next", () => {
+      const request = { key: "value" };
+      const action = testSlice.actions.fetchAllPages(request);
+      expect(action).toEqual({
+        payload: {
+          key: "value",
+          fetchAll: true,
+        },
+        type: "test-slice/fetchPage",
+      });
     });
   });
 });

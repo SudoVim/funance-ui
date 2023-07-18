@@ -14,18 +14,25 @@ import {
   EndpointProps,
   EndpointRequest,
 } from "./endpoint";
-import { DefaultError } from "../request";
+import { DefaultError, APIResponse } from "../request";
 import { call, put } from "redux-saga/effects";
 
 export type PaginatedEndpointRequest = EndpointRequest & {
+  url?: string;
   page?: number;
+  fetchAll?: boolean;
 };
 
 export type PaginatedEndpointAction<
   R extends PaginatedEndpointRequest = PaginatedEndpointRequest,
 > = PayloadAction<R>;
 
-export function paginatedSearchParams({ page }: PaginatedEndpointRequest) {
+export function paginatedSearchParams({ url, page }: PaginatedEndpointRequest) {
+  if (url) {
+    const parsedURL = new URL(url);
+    return parsedURL.searchParams;
+  }
+
   return new URLSearchParams({ page: `${page ?? 1}` });
 }
 
@@ -127,9 +134,22 @@ export function createPaginatedEndpointSlice<
     },
   });
 
-  const { reducer, actions } = slice;
   function* handleResponse({ request, response }: EndpointResponse<R>) {
-    yield put(actions.finishPage({ request, response }));
+    yield put(slice.actions.finishPage({ request, response }));
+
+    const { fetchAll } = request;
+    const { success, data } = response;
+    if (fetchAll && success && data) {
+      const { next } = data as PaginatedEndpointResponse;
+      if (next) {
+        yield put(
+          slice.actions.fetchPage({
+            ...request,
+            url: next,
+          }),
+        );
+      }
+    }
 
     const { callback } = request;
     if (callback) {
@@ -137,5 +157,20 @@ export function createPaginatedEndpointSlice<
     }
   }
 
-  return { reducer, actions, handleResponse };
+  function fetchAllPages(request: R) {
+    return slice.actions.fetchPage({
+      ...request,
+      fetchAll: true,
+    });
+  }
+
+  const { actions } = slice;
+  return {
+    ...slice,
+    handleResponse,
+    actions: {
+      ...actions,
+      fetchAllPages,
+    },
+  };
 }
