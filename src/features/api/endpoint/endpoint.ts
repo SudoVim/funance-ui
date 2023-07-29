@@ -114,7 +114,7 @@ export function createEndpointSlice<
   function* handleResponse({ request, response }: EndpointResponse<R>) {
     yield put(actions.finish({ request, response }));
 
-    const { callback } = request;
+    const callback = request?.callback;
     if (callback) {
       yield call(callback, response);
     }

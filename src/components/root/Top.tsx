@@ -39,5 +39,3 @@ export const Top: React.FC<Props> = () => {
     </Box>
   );
 };
-
-export default Top;
