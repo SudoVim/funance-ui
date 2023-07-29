@@ -1,7 +1,15 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  SliceCaseReducers,
+} from "@reduxjs/toolkit";
 
 export type ClosedModalState = {
   isOpen: false;
+};
+
+export const closedModalState: ClosedModalState = {
+  isOpen: false,
 };
 
 export type OpenModalState<T = undefined> = {
@@ -11,16 +19,22 @@ export type OpenModalState<T = undefined> = {
 
 export type ModalState<T = undefined> = ClosedModalState | OpenModalState<T>;
 
+export type ModalSliceOpts = {
+  name: string;
+};
+
 export function createModalSlice<T = undefined>({ name }: ModalSliceOpts) {
-  const initialState: ModalState<T> = { isOpen: false };
-  return createSlice({
+  return createSlice<ModalState<T>, SliceCaseReducers<ModalState<T>>>({
     name,
-    initialState,
+    initialState: closedModalState,
     reducers: {
-      closeModal: (state: APIState, action: PayloadAction) => {
-        return initialState;
+      closeModal: (state: any, action: PayloadAction): ModalState<T> => {
+        return closedModalState;
       },
-      openModal: (state: APIState, { payload: data }: PayloadAction<T>) => {
+      openModal: (
+        state: any,
+        { payload: data }: PayloadAction<T>,
+      ): ModalState<T> => {
         return {
           isOpen: true,
           data,
