@@ -4,7 +4,7 @@ import { selectors } from "features";
 import { useNavigate } from "react-router";
 
 export type Props = {
-  redirectHasAuth?: boolean;
+  redirectHasAuth?: string;
   children?: ReactNode | ReactNode[];
 };
 
