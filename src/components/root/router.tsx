@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
-import Top from "./Top";
-import Dashboard from "components/dashboard";
-import Login from "components/account/Login";
+import { Top } from "./Top";
+import { Dashboard } from "components/dashboard";
+import { Login, LoggedInApp, AuthGate } from "components/account";
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +10,21 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element: <AuthGate redirectHasAuth="/app" />,
+      },
+      {
+        path: "app",
+        element: (
+          <AuthGate>
+            <LoggedInApp />
+          </AuthGate>
+        ),
+        children: [
+          {
+            index: true,
+            element: <Dashboard />,
+          },
+        ],
       },
       {
         path: "login",
