@@ -10,12 +10,40 @@ import { APIResponse } from "features/api/request";
 export function* accountsPage({ payload: request }: PaginatedEndpointAction) {
   const searchParams = paginatedSearchParams(request);
   const response: APIResponse = yield call(authRequest, {
-    path: `/holding_accounts?${searchParams.toString()}`,
+    path: `/holding_accounts/?${searchParams.toString()}`,
     method: "GET",
   });
   yield call(endpoints.accounts.list.handleResponse, { request, response });
 }
 
+export function* accountPurchasesPage({
+  payload: request,
+}: PaginatedEndpointAction) {
+  const searchParams = paginatedSearchParams(request);
+
+  const { holdingAccountId, tickerSymbol } = request;
+  if (holdingAccountId) {
+    searchParams.set("holding_account", holdingAccountId);
+  }
+
+  if (tickerSymbol) {
+    searchParams.set("ticker", tickerSymbol);
+  }
+
+  const response: APIResponse = yield call(authRequest, {
+    path: `/holding_account_purchases/?${searchParams.toString()}`,
+    method: "GET",
+  });
+  yield call(endpoints.account_purchases.list.handleResponse, {
+    request,
+    response,
+  });
+}
+
 export function* sagas() {
   yield takeEvery("holdings.accounts.list/fetchPage", accountsPage);
+  yield takeEvery(
+    "holdings.account_purchases.list/fetchPage",
+    accountPurchasesPage,
+  );
 }

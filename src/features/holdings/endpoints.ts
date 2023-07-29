@@ -3,19 +3,36 @@ import {
   PaginatedEndpointRequest,
 } from "features/api/endpoint";
 
-export type ListRequest = PaginatedEndpointRequest & {};
+export type ListAccountsRequest = PaginatedEndpointRequest & {};
 
-type Holding = {
+type HoldingAccount = {
   id: string;
   name: string;
   currency: string;
   available_cash: number;
 };
 
+export type ListAccountPurchasesRequest = PaginatedEndpointRequest & {
+  holdingAccountId?: string;
+  tickerSymbol?: string;
+};
+
+type HoldingAccountPurchase = {
+  id: string;
+};
+
 export const endpoints = {
   accounts: {
-    list: createPaginatedEndpointSlice<ListRequest, Holding>({
+    list: createPaginatedEndpointSlice<ListAccountsRequest, HoldingAccount>({
       name: "holdings.accounts.list",
+    }),
+  },
+  account_purchases: {
+    list: createPaginatedEndpointSlice<
+      ListAccountPurchasesRequest,
+      HoldingAccountPurchase
+    >({
+      name: "holdings.account_purchases.list",
     }),
   },
 };

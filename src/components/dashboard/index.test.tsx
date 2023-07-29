@@ -105,10 +105,18 @@ describe("Dashboard tests", () => {
     const component = shallow(<Dashboard />);
     expect(useEffect).toHaveBeenCalledTimes(3);
     useEffect.mock.calls[2][0]();
-    expect(dispatch).toHaveBeenCalledTimes(1);
-    expect(dispatch).toHaveBeenLastCalledWith({
-      type: "holdings.accounts.list/fetchPage",
-      payload: { fetchAll: true },
-    });
+    expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch.mock.calls[0]).toEqual([
+      {
+        type: "holdings.accounts.list/fetchPage",
+        payload: { fetchAll: true },
+      },
+    ]);
+    expect(dispatch.mock.calls[1]).toEqual([
+      {
+        type: "holdings.account_purchases.list/fetchPage",
+        payload: { fetchAll: true },
+      },
+    ]);
   });
 });
