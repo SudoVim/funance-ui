@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { actions, selectors } from "features";
 import { useNavigate } from "react-router";
+import { Box, Button } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 export type Props = {};
 
@@ -34,5 +36,13 @@ export const Dashboard: React.FC<Props> = () => {
     return null;
   }
 
-  return <div>Dashboard!</div>;
+  return (
+    <Box>
+      <RouterLink to="/app/accounts/create">
+        <Button type="submit" variant="contained" disabled={false}>
+          Create Account
+        </Button>
+      </RouterLink>
+    </Box>
+  );
 };

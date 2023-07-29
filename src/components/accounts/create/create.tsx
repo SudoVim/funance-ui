@@ -9,29 +9,30 @@ import { useNavigate } from "react-router";
 
 export type Props = {};
 
-export const Login: React.FC<Props> = () => {
+export const Create: React.FC<Props> = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const loginState = useSelector(selectors.account.login);
-  const hasAuth = useSelector(selectors.api.hasAuth);
+  const createState = useSelector(selectors.holdings.accounts.create);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const loginDisabled = !username || !password;
-
-  useEffect(() => {
-    if (hasAuth) {
-      navigate("/");
-    }
-  }, [hasAuth, navigate]);
+  const [name, setName] = useState("");
+  const createDisabled = !createState.isEmpty || !name;
 
   useEffect(() => {
     return () => {
-      dispatch(actions.account.login.clear(undefined));
+      dispatch(actions.holdings.accounts.create.clear(undefined));
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!createState.isFilled || !createState.success) {
+      return;
+    }
+
+    const { data: account } = createState;
+    navigate(`/app/accounts/${account.id}`);
+  }, [createState]);
 
   return (
     <Box
@@ -48,38 +49,24 @@ export const Login: React.FC<Props> = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          dispatch(
-            actions.account.login.request({
-              username,
-              password,
-            }),
-          );
+          dispatch(actions.holdings.accounts.create.request({ name }));
         }}
       >
         <FormGrid>
           <Typography variant="h3" color={theme.palette.text.primary}>
-            Login!
+            Create Holding Account
           </Typography>
           <TextField
             id="outlined-basic"
-            label="Username"
+            label="Name"
             variant="outlined"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             autoFocus
           />
-          <TextField
-            id="outlined-basic"
-            label="Password"
-            type="password"
-            variant="outlined"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Submit disabled={loginDisabled} text="Login" />
+          <Submit disabled={createDisabled} text="Create" />
         </FormGrid>
       </form>
-      <EndpointAlert endpoint={loginState} />
+      <EndpointAlert endpoint={createState} />
     </Box>
   );
 };
-
-export default Login;

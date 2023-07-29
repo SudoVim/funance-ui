@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { Top } from "./Top";
 import { Dashboard } from "components/dashboard";
 import { Login, LoggedInApp, AuthGate } from "components/account";
+import { route as accountsRoute } from "components/accounts";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
             index: true,
             element: <Dashboard />,
           },
+          accountsRoute,
         ],
       },
       {
