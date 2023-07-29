@@ -1,9 +1,14 @@
-import { endpoints, ListAccountPurchasesRequest } from "./endpoints";
+import {
+  endpoints,
+  ListAccountPurchasesRequest,
+  CreateAccountRequest,
+} from "./endpoints";
 import { call, takeEvery } from "redux-saga/effects";
 import { authRequest } from "features/api";
 import {
   paginatedSearchParams,
   PaginatedEndpointAction,
+  EndpointAction,
 } from "features/api/endpoint";
 import { APIResponse } from "features/api/request";
 
@@ -14,6 +19,18 @@ export function* accountsPage({ payload: request }: PaginatedEndpointAction) {
     method: "GET",
   });
   yield call(endpoints.accounts.list.handleResponse, { request, response });
+}
+
+export function* createAccount({
+  payload: request,
+}: EndpointAction<CreateAccountRequest>) {
+  const { name } = request;
+  const response: APIResponse = yield call(authRequest, {
+    path: `/holding_accounts/`,
+    method: "POST",
+    body: { name },
+  });
+  yield call(endpoints.accounts.create.handleResponse, { request, response });
 }
 
 export function* accountPurchasesPage({
@@ -43,6 +60,7 @@ export function* accountPurchasesPage({
 
 export function* sagas() {
   yield takeEvery("holdings.accounts.list/fetchPage", accountsPage);
+  yield takeEvery("holdings.accounts.create/request", createAccount);
   yield takeEvery(
     "holdings.account_purchases.list/fetchPage",
     accountPurchasesPage,
