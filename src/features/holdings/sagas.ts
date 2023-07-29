@@ -1,4 +1,4 @@
-import { endpoints } from "./endpoints";
+import { endpoints, ListAccountPurchasesRequest } from "./endpoints";
 import { call, takeEvery } from "redux-saga/effects";
 import { authRequest } from "features/api";
 import {
@@ -18,14 +18,15 @@ export function* accountsPage({ payload: request }: PaginatedEndpointAction) {
 
 export function* accountPurchasesPage({
   payload: request,
-}: PaginatedEndpointAction) {
+}: PaginatedEndpointAction<ListAccountPurchasesRequest>) {
   const searchParams = paginatedSearchParams(request);
 
-  const { holdingAccountId, tickerSymbol } = request;
+  const { holdingAccountId } = request;
   if (holdingAccountId) {
     searchParams.set("holding_account", holdingAccountId);
   }
 
+  const { tickerSymbol } = request;
   if (tickerSymbol) {
     searchParams.set("ticker", tickerSymbol);
   }
