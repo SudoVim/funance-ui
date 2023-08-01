@@ -26,11 +26,7 @@ export type Props<T> = {
   getRow: (result: T) => Row;
 };
 
-export const Table: React.FC<Props<T>> = ({
-  results,
-  headers,
-  getRow,
-}: Props<T>) => {
+export function Table<T>({ results, headers, getRow }: Props<T>) {
   if (headers.length === 0) {
     throw new Error("unexpectedly received empty headers array");
   }
@@ -68,4 +64,4 @@ export const Table: React.FC<Props<T>> = ({
       </MUITable>
     </TableContainer>
   );
-};
+}
