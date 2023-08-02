@@ -188,16 +188,34 @@ describe("test createPaginatedEndpointSlice function", () => {
         .isDone();
     });
   });
-  describe("test fetchAllPages", () => {
-    it("runs fetchAllPages and callback with next", () => {
-      const request = { key: "value" };
-      const action = testSlice.actions.fetchAllPages(request);
-      expect(action).toEqual({
-        payload: {
-          key: "value",
-          fetchAll: true,
-        },
-        type: "test-slice/fetchPage",
+  describe("test getPage", () => {
+    it("empty pages", () => {
+      const state = emptyEndpoint;
+      const request = {};
+      const page = testSlice.getPage(state, request);
+      expect(page).toEqual(emptyEndpoint);
+    });
+    it("loading pages", () => {
+      const state = loadingEndpoint;
+      const request = {};
+      const page = testSlice.getPage(state, request);
+      expect(page).toEqual(emptyEndpoint);
+    });
+    it("page not found", () => {
+      const state = filledEndpoint;
+      const request = {};
+      const page = testSlice.getPage(state, request);
+      expect(page).toEqual(emptyEndpoint);
+    });
+    it("page found", () => {
+      const state = filledEndpoint;
+      const request = { page: 2 };
+      const page = testSlice.getPage(state, request);
+      expect(page).toEqual({
+        data: {},
+        isEmpty: false,
+        isFilled: true,
+        isLoading: false,
       });
     });
   });

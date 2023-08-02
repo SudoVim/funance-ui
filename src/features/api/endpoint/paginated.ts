@@ -2,6 +2,8 @@ import {
   createSlice,
   PayloadAction,
   SliceCaseReducers,
+  Slice,
+  Reducer,
 } from "@reduxjs/toolkit";
 import {
   emptyEndpoint,
@@ -13,6 +15,7 @@ import {
   loadingEndpoint,
   EndpointProps,
   EndpointRequest,
+  Endpoint,
 } from "./endpoint";
 import { DefaultError, APIResponse } from "../request";
 import { call, put } from "redux-saga/effects";
@@ -63,18 +66,56 @@ export type PaginatedEndpoint<P = undefined, E = DefaultError> =
 
 export type PaginatedEndpointProps = EndpointProps;
 
+export function getKeyFromRequest({ page }: PaginatedEndpointRequest) {
+  return `${page || 1}`;
+}
+
+export type PageEndpoint<P = undefined, E = DefaultError> = Endpoint<
+  PaginatedEndpointResponse<P>,
+  E
+>;
+
+export type PaginatedEndpointActions<
+  R extends PaginatedEndpointRequest = PaginatedEndpointRequest,
+> = {
+  clear: () => PayloadAction;
+  fetchPage: (request: R) => PayloadAction<R>;
+  fetchAllPages: () => PayloadAction<R>;
+  finishPage: (
+    response: EndpointResponse<R>,
+  ) => PayloadAction<EndpointResponse<R>>;
+};
+
+export type PaginatedEndpointSlice<
+  R extends PaginatedEndpointRequest = PaginatedEndpointRequest,
+  P = undefined,
+  E = DefaultError,
+> = {
+  slice: Slice<
+    PaginatedEndpoint<P, E>,
+    SliceCaseReducers<PaginatedEndpoint<P, E>>
+  >;
+  actions: PaginatedEndpointActions<R>;
+  reducer: Reducer<PaginatedEndpoint<P, E>>;
+  handleResponse: (endpointResponse: EndpointResponse<R>) => any;
+  getPage: (
+    state: PaginatedEndpoint<P, E>,
+    request: PaginatedEndpointRequest,
+  ) => PageEndpoint<P, E>;
+};
+
 export function createPaginatedEndpointSlice<
   R extends PaginatedEndpointRequest = PaginatedEndpointRequest,
   P = undefined,
   E = DefaultError,
->({ name }: PaginatedEndpointProps) {
+>({ name }: PaginatedEndpointProps): PaginatedEndpointSlice<R, P, E> {
   const naiveIndirectSlice = createIndirectEndpointSlice<
     R,
     PaginatedEndpoint<P, E>,
     E
   >({
     name,
-    getKeyFromRequest: ({ page }: PaginatedEndpointRequest) => `${page || 1}`,
+    getKeyFromRequest,
   });
   const slice = createSlice<
     PaginatedEndpoint<P, E>,
@@ -134,6 +175,16 @@ export function createPaginatedEndpointSlice<
     },
   });
 
+  const actions = {
+    clear: () => slice.actions.clear(undefined),
+    fetchPage: (request: R) => slice.actions.fetchPage(request),
+    fetchAllPages: () => slice.actions.fetchPage({ fetchAll: true }),
+    finishPage: (response: EndpointResponse<R>) =>
+      slice.actions.finishPage(response),
+  };
+
+  const reducer = slice.reducer;
+
   function* handleResponse({ request, response }: EndpointResponse<R>) {
     yield put(slice.actions.finishPage({ request, response }));
 
@@ -157,20 +208,23 @@ export function createPaginatedEndpointSlice<
     }
   }
 
-  function fetchAllPages(request: R) {
-    return slice.actions.fetchPage({
-      ...request,
-      fetchAll: true,
-    });
+  function getPage(
+    state: PaginatedEndpoint<P, E>,
+    request: PaginatedEndpointRequest,
+  ): PageEndpoint<P, E> {
+    const pageKey = getKeyFromRequest(request);
+    if (!state.isFilled) {
+      return emptyEndpoint;
+    }
+
+    return state.pages[pageKey] ?? emptyEndpoint;
   }
 
-  const { actions } = slice;
   return {
-    ...slice,
+    slice,
+    actions,
+    reducer,
     handleResponse,
-    actions: {
-      ...actions,
-      fetchAllPages,
-    },
+    getPage,
   };
 }
