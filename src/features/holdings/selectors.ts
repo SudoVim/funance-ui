@@ -21,6 +21,20 @@ function getAccount(state: any, request: AccountRequest) {
   );
 }
 
+function getCurrentAccount(state: any) {
+  const request = state.holdings.accounts.current.currentAccount;
+  if (!request) {
+    return undefined;
+  }
+
+  const endpoint = getAccount(state, request);
+  if (!endpoint.isFilled || !endpoint.success) {
+    return undefined;
+  }
+
+  return endpoint.data;
+}
+
 function getAccountsCreateEndpoint(state: any) {
   return state.holdings.accounts.create;
 }
@@ -33,5 +47,6 @@ export const selectors = {
     },
     get: getAccount,
     create: getAccountsCreateEndpoint,
+    current: getCurrentAccount,
   },
 };

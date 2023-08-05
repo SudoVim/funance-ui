@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Create } from "./create";
 import { List } from "./list";
 import { Account } from "./account";
+import { AccountWrapper } from "./account-wrapper";
 
 export const route = {
   path: "accounts",
@@ -13,7 +14,13 @@ export const route = {
     },
     {
       path: ":id",
-      element: <Account />,
+      element: <AccountWrapper />,
+      children: [
+        {
+          index: true,
+          element: <Account />,
+        },
+      ],
     },
     {
       path: "create",
