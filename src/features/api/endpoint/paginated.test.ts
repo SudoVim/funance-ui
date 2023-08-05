@@ -21,6 +21,69 @@ describe("test createPaginatedEndpointSlice function", () => {
       },
     },
   };
+  describe("test clear from empty", () => {
+    it("clears all pages from empty", () => {
+      const state = testSlice.reducer(emptyEndpoint, testSlice.actions.clear());
+      expect(state).toEqual(emptyEndpoint);
+    });
+    it("clears all pages from loading", () => {
+      const state = testSlice.reducer(
+        loadingEndpoint,
+        testSlice.actions.clear(),
+      );
+      expect(state).toEqual(emptyEndpoint);
+    });
+    it("clears all pages from filled", () => {
+      const state = testSlice.reducer(
+        filledEndpoint,
+        testSlice.actions.clear(),
+      );
+      expect(state).toEqual(emptyEndpoint);
+    });
+    it("clears single page from empty", () => {
+      const request = { page: 2 };
+      const state = testSlice.reducer(
+        emptyEndpoint,
+        testSlice.actions.clear(request),
+      );
+      expect(state).toEqual(emptyEndpoint);
+    });
+    it("clears single page from loading", () => {
+      const request = { page: 2 };
+      const state = testSlice.reducer(
+        loadingEndpoint,
+        testSlice.actions.clear(request),
+      );
+      expect(state).toEqual(emptyEndpoint);
+    });
+    it("clears single page from filled", () => {
+      const request = { page: 2 };
+      const state = testSlice.reducer(
+        filledEndpoint,
+        testSlice.actions.clear(request),
+      );
+      expect(state).toEqual({
+        ...filledEndpoint,
+        pages: {
+          "2": emptyEndpoint,
+        },
+      });
+    });
+    it("clears other single page from filled", () => {
+      const request = { page: 1 };
+      const state = testSlice.reducer(
+        filledEndpoint,
+        testSlice.actions.clear(request),
+      );
+      expect(state).toEqual({
+        ...filledEndpoint,
+        pages: {
+          ...filledEndpoint.pages,
+          "1": emptyEndpoint,
+        },
+      });
+    });
+  });
   describe("test fetchPage", () => {
     it("fetches the first page from empty", () => {
       const state = testSlice.reducer(

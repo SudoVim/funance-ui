@@ -32,9 +32,14 @@ describe("PaginatedTable tests", () => {
       getRow,
     };
   });
-  it("renders the component with empty results", () => {
+  it("does not render the table without a filled page", () => {
     const component = shallow(<PaginatedTable {...props} />);
-    expect(component.text()).toEqual("");
+    expect(component.text()).not.toEqual("");
+    expect(component.find("Table")).toHaveLength(0);
+    expect(component.find("EndpointAlert")).toHaveLength(1);
+    expect(component.find("EndpointAlert").props().endpoint).toEqual(
+      emptyEndpoint,
+    );
   });
   it("does not renders the table without a filled page", () => {
     const endpointPage = {

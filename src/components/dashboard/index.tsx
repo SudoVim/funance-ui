@@ -25,24 +25,19 @@ export const Dashboard: React.FC<Props> = () => {
     dispatch(actions.account.requireAccount());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (accountEndpoint?.isFilled && accountEndpoint.success) {
-      dispatch(actions.holdings.accounts.list.fetchAllPages());
-      dispatch(actions.holdings.account_purchases.list.fetchAllPages());
-    }
-  }, [dispatch, accountEndpoint]);
-
   if (!accountEndpoint.isFilled) {
     return null;
   }
 
   return (
-    <Box>
-      <RouterLink to="/app/accounts/create">
-        <Button type="submit" variant="contained" disabled={false}>
-          Create Account
-        </Button>
-      </RouterLink>
+    <Box sx={{ maxWidth: 100 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", rowGap: 2 }}>
+        <RouterLink to="/app/accounts">
+          <Button type="submit" variant="contained" disabled={false}>
+            Accounts
+          </Button>
+        </RouterLink>
+      </Box>
     </Box>
   );
 };

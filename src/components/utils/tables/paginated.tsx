@@ -24,20 +24,24 @@ export function PaginatedTable<
     () => ({ ...(baseRequest ?? {}), page }),
     [baseRequest, page],
   );
+
   const pageEndpoint = slice.getPage(endpoint, request);
 
-  if (!endpoint.isFilled) {
-    return null;
-  }
+  const results = useMemo(() => {
+    if (!pageEndpoint.isFilled || !pageEndpoint.success) {
+      return undefined;
+    }
+
+    return pageEndpoint.data.results;
+  }, [pageEndpoint]);
 
   const renderTable = useCallback(() => {
-    if (!pageEndpoint.isFilled || !pageEndpoint.success) {
+    if (results === undefined) {
       return null;
     }
 
-    const results = pageEndpoint.data.results;
     return <Table<P> results={results} headers={headers} getRow={getRow} />;
-  }, [pageEndpoint, headers, getRow]);
+  }, [results, headers, getRow]);
 
   // TODO: Render page buttons
 

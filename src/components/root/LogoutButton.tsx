@@ -9,7 +9,7 @@ export function LogoutButton() {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const loginState = useSelector(selectors.account.logout);
+  const logoutState = useSelector(selectors.account.logout);
 
   useEffect(
     () => () => {
@@ -29,7 +29,10 @@ export function LogoutButton() {
       >
         logout
       </Box>
-      <EndpointAlert endpoint={loginState} />
+      <EndpointAlert
+        endpoint={logoutState}
+        successMessage="Successfully logged out!"
+      />
     </Box>
   );
 }

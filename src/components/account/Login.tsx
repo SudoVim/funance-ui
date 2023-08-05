@@ -77,7 +77,10 @@ export const Login: React.FC<Props> = () => {
           <Submit disabled={loginDisabled} text="Login" />
         </FormGrid>
       </form>
-      <EndpointAlert endpoint={loginState} />
+      <EndpointAlert
+        endpoint={loginState}
+        successMessage="Successfully logged in!"
+      />
     </Box>
   );
 };

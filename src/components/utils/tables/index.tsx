@@ -1,2 +1,2 @@
 export { Table } from "./table";
-import { PaginatedTable } from "./paginated";
+export { PaginatedTable } from "./paginated";
