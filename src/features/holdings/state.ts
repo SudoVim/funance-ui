@@ -24,7 +24,6 @@ export const state = combineReducers({
     list: endpoints.accounts.list.reducer,
     get: endpoints.accounts.get.reducer,
     create: endpoints.accounts.create.reducer,
-    create_purchase: endpoints.accounts.create_purchase.reducer,
     current: current.reducer,
   }),
 });
