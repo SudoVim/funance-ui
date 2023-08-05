@@ -198,5 +198,10 @@ export function createIndirectEndpointSlice<
     }
   }
 
-  return { reducer, actions, handleResponse };
+  function getEndpoint(state: IndirectEndpoint<T, E>, request: R) {
+    const key = getKeyFromRequest(request);
+    return state[key] ?? emptyEndpoint;
+  }
+
+  return { reducer, actions, handleResponse, getEndpoint };
 }

@@ -9,9 +9,12 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import { useTheme } from "@mui/material";
 
 export type Row = {
   key: string;
+  link?: string;
   cells: Record<string, ReactNode>;
 };
 
@@ -27,6 +30,8 @@ export type Props<T> = {
 };
 
 export function Table<T>({ results, headers, getRow }: Props<T>) {
+  const theme = useTheme();
+
   if (headers.length === 0) {
     throw new Error("unexpectedly received empty headers array");
   }
@@ -37,15 +42,29 @@ export function Table<T>({ results, headers, getRow }: Props<T>) {
 
   const renderRow = useCallback(
     (result: T) => {
-      const { key, cells } = getRow(result);
-      return (
-        <TableRow key={key}>
-          {headers.map(({ key: headerKey }) => {
-            const cell = cells[headerKey] ?? undefined;
-            return <TableCell key={headerKey}>{cell}</TableCell>;
-          })}
-        </TableRow>
-      );
+      const { key, link, cells } = getRow(result);
+      const tableCells = headers.map(({ key: headerKey }) => {
+        const cell = cells[headerKey] ?? undefined;
+        if (!link) {
+          return <TableCell key={headerKey}>{cell}</TableCell>;
+        }
+
+        return (
+          <TableCell key={headerKey}>
+            <RouterLink
+              to={link}
+              style={{
+                textDecoration: "none",
+                color: theme.palette.text.primary,
+              }}
+            >
+              {cell}
+            </RouterLink>
+          </TableCell>
+        );
+      });
+
+      return <TableRow key={key}>{tableCells}</TableRow>;
     },
     [getRow, headers],
   );
@@ -54,11 +73,15 @@ export function Table<T>({ results, headers, getRow }: Props<T>) {
     <TableContainer component={Paper}>
       <MUITable>
         <TableHead>
-          {headers.map(({ key, name }) => (
-            <TableCell key={key}>
-              <Box sx={{ typography: "body2", fontWeight: "bold" }}>{name}</Box>
-            </TableCell>
-          ))}
+          <TableRow>
+            {headers.map(({ key, name }) => (
+              <TableCell key={key}>
+                <Box sx={{ typography: "body2", fontWeight: "bold" }}>
+                  {name}
+                </Box>
+              </TableCell>
+            ))}
+          </TableRow>
         </TableHead>
         <TableBody>{results.map(renderRow)}</TableBody>
       </MUITable>

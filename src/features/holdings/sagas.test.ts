@@ -1,6 +1,11 @@
 import { describe, it, expect } from "vitest";
 import { testSaga } from "redux-saga-test-plan";
-import { accountsPage, createAccount, accountPurchasesPage } from "./sagas";
+import {
+  accountsPage,
+  getAccount,
+  createAccount,
+  accountPurchasesPage,
+} from "./sagas";
 import { authRequest } from "features/api";
 import { endpoints } from "./endpoints";
 
@@ -17,6 +22,24 @@ describe("test accountsPage", () => {
       })
       .next(response)
       .call(endpoints.accounts.list.handleResponse, { request, response })
+      .next()
+      .isDone();
+  });
+});
+
+describe("test getAccount", () => {
+  it("fetches a page", () => {
+    const request = { id: "account%id" };
+    const response = {};
+    const saga = getAccount;
+    testSaga(saga, { payload: request })
+      .next()
+      .call(authRequest, {
+        path: "/holding_accounts/account%25id/",
+        method: "GET",
+      })
+      .next(response)
+      .call(endpoints.accounts.get.handleResponse, { request, response })
       .next()
       .isDone();
   });

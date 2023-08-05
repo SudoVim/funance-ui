@@ -264,4 +264,18 @@ describe("test createIndirectEndpointSlice", () => {
         .isDone();
     });
   });
+  describe("test getEndpoint", () => {
+    it("gets empty endpoint from empty", () => {
+      const state = {};
+      const request = { key: "key" };
+      expect(slice.getEndpoint(state, request)).toEqual(emptyEndpoint);
+    });
+    it("gets endpoint", () => {
+      const state = {
+        key: { filled: "endpoint" },
+      };
+      const request = { key: "key" };
+      expect(slice.getEndpoint(state, request)).toEqual({ filled: "endpoint" });
+    });
+  });
 });

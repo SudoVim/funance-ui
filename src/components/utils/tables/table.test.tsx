@@ -2,6 +2,7 @@ import React from "react";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import { shallow } from "enzyme";
 import { TableHead, TableCell, TableBody, TableRow } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 
 import { Table } from "./table";
 
@@ -81,5 +82,42 @@ describe("Table tests", () => {
     expect(rowCells).toHaveLength(1);
     expect(rowCells.at(0).key()).toEqual("a");
     expect(rowCells.at(0).text()).toEqual("Result A");
+
+    const linkCells = component.find(RouterLink);
+    expect(linkCells).toHaveLength(0);
+  });
+  it("renders a row with cells and links", () => {
+    props.headers = [{ key: "a", name: "Column A" }];
+    props.getRow = (result: string) => {
+      expect(result).toEqual("Result A");
+      return {
+        key: "1",
+        link: "/path",
+        cells: {
+          a: result,
+        },
+      };
+    };
+    props.results = ["Result A"];
+    const component = shallow(<Table {...props} />);
+    const headers = component.find(TableHead);
+    expect(headers).toHaveLength(1);
+    const headerCells = headers.find(TableCell);
+    expect(headerCells).toHaveLength(1);
+    expect(headerCells.at(0).key()).toEqual("a");
+    expect(headerCells.at(0).text()).toEqual("Column A");
+
+    const body = component.find(TableBody);
+    expect(body).toHaveLength(1);
+    const bodyRows = body.find(TableRow);
+    expect(bodyRows).toHaveLength(1);
+    expect(bodyRows.at(0).key()).toEqual("1");
+    const rowCells = bodyRows.at(0).find(TableCell);
+    expect(rowCells).toHaveLength(1);
+    expect(rowCells.at(0).key()).toEqual("a");
+    expect(rowCells.at(0).text()).toEqual("Result A");
+    const linkCells = component.find(RouterLink);
+    expect(linkCells).toHaveLength(1);
+    expect(linkCells.props().to).toEqual("/path");
   });
 });
