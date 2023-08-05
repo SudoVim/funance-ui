@@ -4,15 +4,9 @@ import {
   PaginatedEndpointRequest,
   createEndpointSlice,
 } from "features/api/endpoint";
+import { HoldingAccount } from "./types";
 
 export type ListAccountsRequest = PaginatedEndpointRequest & {};
-
-type HoldingAccount = {
-  id: string;
-  name: string;
-  currency: string;
-  available_cash: number;
-};
 
 export type ListAccountPurchasesRequest = PaginatedEndpointRequest & {
   holdingAccountId?: string;

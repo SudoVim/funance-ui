@@ -66,7 +66,7 @@ export const Create: React.FC<Props> = () => {
           <Submit disabled={createDisabled} text="Create" />
         </FormGrid>
       </form>
-      <EndpointAlert endpoint={createState} />
+      <EndpointAlert endpoint={createState} successMessage="Account created!" />
     </Box>
   );
 };

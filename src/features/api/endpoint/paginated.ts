@@ -124,7 +124,23 @@ export function createPaginatedEndpointSlice<
     name,
     initialState: emptyEndpoint,
     reducers: {
-      clear: (state: any): PaginatedEndpoint<P, E> => emptyEndpoint,
+      clear: (
+        state: any,
+        action: PayloadAction<R | undefined>,
+      ): PaginatedEndpoint<P, E> => {
+        const { payload: request } = action;
+        if (!request || !state.isFilled) {
+          return emptyEndpoint;
+        }
+
+        return {
+          ...state,
+          pages: naiveIndirectSlice.reducer(
+            state.pages ?? {},
+            naiveIndirectSlice.actions.clear(request),
+          ),
+        };
+      },
       fetchPage: (
         state: any,
         action: PayloadAction<R>,
@@ -176,7 +192,7 @@ export function createPaginatedEndpointSlice<
   });
 
   const actions = {
-    clear: () => slice.actions.clear(undefined),
+    clear: (request?: R) => slice.actions.clear(request),
     fetchPage: (request: R) => slice.actions.fetchPage(request),
     fetchAllPages: () => slice.actions.fetchPage({ fetchAll: true }),
     finishPage: (response: EndpointResponse<R>) =>

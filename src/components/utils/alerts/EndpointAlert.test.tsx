@@ -47,6 +47,17 @@ describe("EndpointAlert tests", () => {
     expect(component.find(Alert).props().severity).toEqual("error");
     expect(component.find(Alert).text()).toEqual("Error text.");
   });
+  it("does not render successful message when there is not showSuccess", () => {
+    const component = shallow(
+      <EndpointAlert
+        endpoint={{
+          isFilled: true,
+          success: true,
+        }}
+      />,
+    );
+    expect(component.find(Snackbar).props().open).toEqual(false);
+  });
   it("renders the component with successful endpoint with no message", () => {
     const component = shallow(
       <EndpointAlert
@@ -54,6 +65,7 @@ describe("EndpointAlert tests", () => {
           isFilled: true,
           success: true,
         }}
+        showSuccess
       />,
     );
     expect(component.find(Snackbar).props().open).toEqual(true);

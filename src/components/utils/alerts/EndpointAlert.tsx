@@ -6,18 +6,24 @@ import { getError } from "features/api/request";
 export type Props = {
   endpoint: Endpoint<unknown>;
   successMessage?: string;
+  showSuccess?: boolean;
 };
 
 export const EndpointAlert: React.FC<Props> = ({
   endpoint,
   successMessage,
+  showSuccess,
 }) => {
   const message = endpoint.isFilled
     ? endpoint.success
       ? successMessage ?? "Success!"
       : getError(endpoint.errorData) ?? "An error occurred."
     : undefined;
-  const open = endpoint.isFilled && message !== undefined;
+  const open = Boolean(
+    endpoint.isFilled &&
+      (!endpoint.success || showSuccess || successMessage) &&
+      message !== undefined,
+  );
   const severity = endpoint.isFilled && endpoint.success ? "success" : "error";
   return (
     <Snackbar
