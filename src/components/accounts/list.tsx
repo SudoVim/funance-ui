@@ -38,6 +38,7 @@ export const List: React.FC<Props> = ({ page }: Props) => {
   const getRow = useCallback(
     (result: HoldingAccount) => ({
       key: result.id,
+      link: `/app/accounts/${result.id}`,
       cells: {
         name: result.name,
       },

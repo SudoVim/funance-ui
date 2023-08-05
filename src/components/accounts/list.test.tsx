@@ -88,6 +88,7 @@ describe("List tests", () => {
       }),
     ).toEqual({
       key: "result-id",
+      link: "/app/accounts/result-id",
       cells: {
         name: "result-name",
       },
