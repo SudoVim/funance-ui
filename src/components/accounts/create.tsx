@@ -31,7 +31,7 @@ export const Create: React.FC<Props> = () => {
     }
 
     const { data: account } = createState;
-    navigate(`/app/accounts/${account.id}`);
+    navigate(`/app/accounts/${encodeURIComponent(account.id)}`);
   }, [createState]);
 
   return (

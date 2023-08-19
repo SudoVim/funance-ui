@@ -6,9 +6,10 @@ export const actions = {
     list: endpoints.accounts.list.actions,
     get: endpoints.accounts.get.actions,
     create: endpoints.accounts.create.actions,
+    createPurchase: endpoints.accounts.createPurchase.actions,
     current: current.actions,
   },
-  account_purchases: {
-    list: endpoints.account_purchases.list.actions,
+  accountPurchases: {
+    list: endpoints.accountPurchases.list.actions,
   },
 };

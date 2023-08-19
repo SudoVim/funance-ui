@@ -30,6 +30,24 @@ type HoldingAccountPurchase = {
   id: string;
 };
 
+export type CreatePurchaseReference = {
+  account: string;
+};
+
+export type CreatePurchaseRequest = EndpointRequest &
+  CreatePurchaseReference & {
+    ticker: string;
+    quantity: number;
+    price: number;
+    purchasedAt: string;
+  };
+
+export function getCreatePurchaseKeyFromRequest({
+  account,
+}: CreatePurchaseReference) {
+  return account;
+}
+
 export const endpoints = {
   accounts: {
     list: createPaginatedEndpointSlice<ListAccountsRequest, HoldingAccount>({
@@ -42,13 +60,20 @@ export const endpoints = {
     create: createEndpointSlice<CreateAccountRequest, HoldingAccount>({
       name: "holdings.accounts.create",
     }),
+    createPurchase: createIndirectEndpointSlice<
+      CreatePurchaseRequest,
+      HoldingAccountPurchase
+    >({
+      name: "holdings.accounts.createPurchase",
+      getKeyFromRequest: getCreatePurchaseKeyFromRequest,
+    }),
   },
-  account_purchases: {
+  accountPurchases: {
     list: createPaginatedEndpointSlice<
       ListAccountPurchasesRequest,
       HoldingAccountPurchase
     >({
-      name: "holdings.account_purchases.list",
+      name: "holdings.accountPurchases.list",
     }),
   },
 };

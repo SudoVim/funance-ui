@@ -3,6 +3,7 @@ import { Create } from "./create";
 import { List } from "./list";
 import { Account } from "./account";
 import { AccountWrapper } from "./account-wrapper";
+import { CreatePurchase } from "./create-purchase";
 
 export const route = {
   path: "accounts",
@@ -19,6 +20,10 @@ export const route = {
         {
           index: true,
           element: <Account />,
+        },
+        {
+          path: "create_purchase",
+          element: <CreatePurchase />,
         },
       ],
     },
