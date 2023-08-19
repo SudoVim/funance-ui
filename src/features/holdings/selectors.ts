@@ -3,6 +3,7 @@ import {
   endpoints,
   AccountRequest,
   getAccountKeyFromRequest,
+  CreatePurchaseReference,
 } from "./endpoints";
 import { HoldingAccount } from "./types";
 
@@ -35,6 +36,22 @@ function getCurrentAccount(state: any) {
   return endpoint.data;
 }
 
+function getCreatePurchase(state: any, request: CreatePurchaseReference) {
+  return endpoints.accounts.createPurchase.getEndpoint(
+    state.holdings.accounts.createPurchase,
+    request,
+  );
+}
+
+function getCurrentCreatePurchase(state: any) {
+  const account = getCurrentAccount(state);
+  if (!account) {
+    return undefined;
+  }
+
+  return getCreatePurchase(state, { account: account.id });
+}
+
 function getAccountsCreateEndpoint(state: any) {
   return state.holdings.accounts.create;
 }
@@ -47,6 +64,8 @@ export const selectors = {
     },
     get: getAccount,
     create: getAccountsCreateEndpoint,
+    createPurchase: getCreatePurchase,
     current: getCurrentAccount,
+    currentCreatePurchase: getCurrentCreatePurchase,
   },
 };

@@ -124,7 +124,7 @@ export function createEndpointSlice<
 }
 
 export type IndirectEndpointProps<R> = EndpointProps & {
-  getKeyFromRequest: (request: R) => string;
+  getKeyFromRequest: (request: any) => string;
 };
 
 export type IndirectEndpoint<T = undefined, E = DefaultError> = Record<
@@ -198,7 +198,7 @@ export function createIndirectEndpointSlice<
     }
   }
 
-  function getEndpoint(state: IndirectEndpoint<T, E>, request: R) {
+  function getEndpoint(state: IndirectEndpoint<T, E>, request: any) {
     const key = getKeyFromRequest(request);
     return state[key] ?? emptyEndpoint;
   }

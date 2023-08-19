@@ -5,6 +5,7 @@ import {
   getAccount,
   createAccount,
   accountPurchasesPage,
+  createAccountPurchase,
 } from "./sagas";
 import { authRequest } from "features/api";
 import { endpoints } from "./endpoints";
@@ -78,7 +79,7 @@ describe("test accountPurchasessPage", () => {
         method: "GET",
       })
       .next(response)
-      .call(endpoints.account_purchases.list.handleResponse, {
+      .call(endpoints.accountPurchases.list.handleResponse, {
         request,
         response,
       })
@@ -99,7 +100,41 @@ describe("test accountPurchasessPage", () => {
         method: "GET",
       })
       .next(response)
-      .call(endpoints.account_purchases.list.handleResponse, {
+      .call(endpoints.accountPurchases.list.handleResponse, {
+        request,
+        response,
+      })
+      .next()
+      .isDone();
+  });
+});
+
+describe("test createAccountPurchase", () => {
+  it("fetches a page", () => {
+    const request = {
+      account: "account-id",
+      ticker: "MSFT",
+      quantity: 17,
+      price: 1234.56,
+      purchasedAt: "2023-08-19",
+    };
+    const response = {};
+    const saga = createAccountPurchase;
+    testSaga(saga, { payload: request })
+      .next()
+      .call(authRequest, {
+        path: "/holding_accounts/account-id/create_purchase/",
+        method: "POST",
+        body: {
+          account: "account-id",
+          ticker: "MSFT",
+          quantity: 17,
+          price: 1234.56,
+          purchased_at: "2023-08-19",
+        },
+      })
+      .next(response)
+      .call(endpoints.accounts.createPurchase.handleResponse, {
         request,
         response,
       })
