@@ -1,0 +1,1 @@
+export { SimpleMenu } from "./simple";

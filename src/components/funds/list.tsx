@@ -1,9 +1,10 @@
 import React, { useMemo, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Fund } from "features/funds/types";
-import { PaginatedTable } from "components/utils";
+import { PaginatedTable, SimpleMenu } from "components/utils";
 import { PaginatedEndpointRequest } from "features/api/endpoint";
 import { selectors, endpoints, actions } from "features";
+import { Box } from "@mui/material";
 
 export type Props = {
   page?: number;
@@ -13,6 +14,14 @@ const HEADERS = [
   {
     key: "name",
     name: "Name",
+  },
+];
+
+const MENU_ITEMS = [
+  {
+    key: "create",
+    label: "Create Fund",
+    link: "/app/funds/create",
   },
 ];
 
@@ -44,12 +53,21 @@ export const List: React.FC<Props> = ({ page }) => {
   );
 
   return (
-    <PaginatedTable<PaginatedEndpointRequest, Fund>
-      page={page}
-      slice={endpoints.funds.list}
-      endpoint={endpoint}
-      headers={HEADERS}
-      getRow={getRow}
-    />
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        rowGap: 1,
+      }}
+    >
+      <SimpleMenu items={MENU_ITEMS} />
+      <PaginatedTable<PaginatedEndpointRequest, Fund>
+        page={page}
+        slice={endpoints.funds.list}
+        endpoint={endpoint}
+        headers={HEADERS}
+        getRow={getRow}
+      />
+    </Box>
   );
 };
