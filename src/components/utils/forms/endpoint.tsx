@@ -4,8 +4,8 @@ import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { actions } from "features";
 import { EndpointAlert } from "components/utils/alerts";
-import { Submit } from './Submit';
-import { FormGrid } from './FormGrid';
+import { Submit } from "./Submit";
+import { FormGrid } from "./FormGrid";
 
 export type Props<R extends EndpointRequest, T = unknown> = {
   endpoint: Endpoint<T>;
@@ -36,7 +36,13 @@ export function EndpointForm<R extends EndpointRequest, T = unknown>({
   }, [dispatch]);
 
   const submit = useMemo(() => {
-    return <Submit key="submit" disabled={submitDisabled || endpoint.isLoading} text={submitText ?? "Submit"} />;
+    return (
+      <Submit
+        key="submit"
+        disabled={submitDisabled || endpoint.isLoading}
+        text={submitText ?? "Submit"}
+      />
+    );
   }, [submitDisabled, endpoint.isLoading, submitText]);
   const formElements = useMemo(() => {
     if (!children) {
@@ -47,7 +53,7 @@ export function EndpointForm<R extends EndpointRequest, T = unknown>({
       return [children, submit];
     }
 
-    return [ ...children, submit ];
+    return [...children, submit];
   }, [children, submit]);
 
   return (
@@ -73,4 +79,4 @@ export function EndpointForm<R extends EndpointRequest, T = unknown>({
       <EndpointAlert endpoint={endpoint} successMessage={successMessage} />
     </Box>
   );
-};
+}
