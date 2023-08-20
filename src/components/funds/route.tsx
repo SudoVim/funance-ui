@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { List } from "./list";
+import { Create } from "./create";
 
 export const route = {
   path: "funds",
@@ -8,6 +9,10 @@ export const route = {
     {
       index: true,
       element: <List />,
+    },
+    {
+      path: "create",
+      element: <Create />,
     },
   ],
 };
