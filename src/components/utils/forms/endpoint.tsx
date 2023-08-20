@@ -6,12 +6,17 @@ import { actions } from "features";
 import { EndpointAlert } from "components/utils/alerts";
 import { Submit } from "./Submit";
 import { FormGrid } from "./FormGrid";
+import {
+  EndpointRequest,
+  EndpointSlice,
+  Endpoint,
+} from "features/api/endpoint";
 
 export type Props<R extends EndpointRequest, T = unknown> = {
   endpoint: Endpoint<T>;
   children?: ReactNode | ReactNode[];
   submitDisabled?: boolean;
-  slice: EndpointSlice<R, P>;
+  slice: EndpointSlice<R, T>;
   request: R;
   successMessage?: string;
   submitText?: string;
@@ -25,7 +30,7 @@ export function EndpointForm<R extends EndpointRequest, T = unknown>({
   request,
   successMessage,
   submitText,
-}: Props<T>) {
+}: Props<R, T>) {
   const theme = useTheme();
   const dispatch = useDispatch();
 

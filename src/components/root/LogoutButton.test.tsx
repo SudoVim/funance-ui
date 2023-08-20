@@ -58,6 +58,7 @@ describe("LogoutButton tests", () => {
     expect(dispatch).toHaveBeenCalledTimes(1);
     expect(dispatch).toHaveBeenLastCalledWith({
       type: "account.logout/request",
+      payload: {},
     });
   });
 });

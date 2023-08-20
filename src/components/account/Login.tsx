@@ -29,7 +29,7 @@ export const Login: React.FC<Props> = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(actions.account.login.clear(undefined));
+      dispatch(actions.account.login.clear());
     };
   }, [dispatch]);
 
