@@ -3,6 +3,7 @@ import { Top } from "./Top";
 import { Dashboard } from "components/dashboard";
 import { Login, LoggedInApp, AuthGate } from "components/account";
 import { route as accountsRoute } from "components/accounts";
+import { route as fundsRoute } from "components/funds";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
             element: <Dashboard />,
           },
           accountsRoute,
+          fundsRoute,
         ],
       },
       {
