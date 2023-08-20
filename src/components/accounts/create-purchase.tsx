@@ -51,14 +51,12 @@ export const CreatePurchase: React.FC<Props> = ({}) => {
   const [ticker, setTicker] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
-  const [purchasedAt, setPurchasedAt] = useState<string | null>(
-    dayjs().toISOString(),
-  );
+  const [purchasedAt, setPurchasedAt] = useState<string>(dayjs().toISOString());
   const createDisabled =
     ticker === "" ||
     quantity === 0 ||
     price === 0 ||
-    purchasedAt === null ||
+    purchasedAt === "" ||
     endpoint.isLoading;
 
   return (
@@ -126,7 +124,7 @@ export const CreatePurchase: React.FC<Props> = ({}) => {
           </FormControl>
           <DatePicker
             value={purchasedAt}
-            onChange={(newPurchasedAt) => setPurchasedAt(newPurchasedAt)}
+            onChange={(newPurchasedAt) => setPurchasedAt(newPurchasedAt || "")}
           />
           <Submit text="Create" disabled={createDisabled} />
         </FormGrid>

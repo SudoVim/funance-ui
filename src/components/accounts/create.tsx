@@ -21,7 +21,7 @@ export const Create: React.FC<Props> = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(actions.holdings.accounts.create.clear(undefined));
+      dispatch(actions.holdings.accounts.create.clear());
     };
   }, [dispatch]);
 
