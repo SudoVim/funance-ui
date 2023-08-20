@@ -31,10 +31,22 @@ export const Dashboard: React.FC<Props> = () => {
 
   return (
     <Box sx={{ maxWidth: 100 }}>
-      <Box sx={{ display: "flex", flexDirection: "column", rowGap: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          rowGap: 2,
+          alignItems: "center",
+        }}
+      >
         <RouterLink to="/app/accounts">
           <Button type="submit" variant="contained" disabled={false}>
             Accounts
+          </Button>
+        </RouterLink>
+        <RouterLink to="/app/funds">
+          <Button type="submit" variant="contained" disabled={false}>
+            Funds
           </Button>
         </RouterLink>
       </Box>
