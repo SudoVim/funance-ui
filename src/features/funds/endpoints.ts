@@ -5,7 +5,7 @@ import {
   PaginatedEndpointRequest,
   createEndpointSlice,
 } from "features/api/endpoint";
-import { Fund, FundAllocation } from "./types";
+import { FundReference, Fund, FundAllocation } from "./types";
 
 export type CreateFundRequest = EndpointRequest & {
   name: string;
@@ -13,10 +13,6 @@ export type CreateFundRequest = EndpointRequest & {
 };
 
 export type ListFundsRequest = PaginatedEndpointRequest & {};
-
-export type FundReference = {
-  id: string;
-};
 
 export type FundRequest = EndpointRequest & FundReference;
 
