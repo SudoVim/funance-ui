@@ -5,7 +5,11 @@ import {
   PaginatedEndpointRequest,
   createEndpointSlice,
 } from "features/api/endpoint";
-import { HoldingAccount } from "./types";
+import {
+  HoldingAccount,
+  HoldingAccountPurchase,
+  AccountRequest,
+} from "./types";
 
 export type ListAccountsRequest = PaginatedEndpointRequest & {};
 
@@ -14,20 +18,12 @@ export type ListAccountPurchasesRequest = PaginatedEndpointRequest & {
   tickerSymbol?: string;
 };
 
-export type AccountRequest = EndpointRequest & {
-  id: string;
-};
-
 export function getAccountKeyFromRequest({ id }: AccountRequest) {
   return id;
 }
 
 export type CreateAccountRequest = EndpointRequest & {
   name: string;
-};
-
-type HoldingAccountPurchase = {
-  id: string;
 };
 
 export type CreatePurchaseReference = {

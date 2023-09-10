@@ -1,10 +1,7 @@
 import { combineReducers } from "redux";
-import { endpoints, AccountRequest } from "./endpoints";
+import { endpoints } from "./endpoints";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export type CurrentState = {
-  currentAccount?: AccountRequest;
-};
+import { CurrentState, AccountRequest } from "./types";
 
 export const current = createSlice({
   name: "holdings.accounts.current",
@@ -26,5 +23,8 @@ export const state = combineReducers({
     create: endpoints.accounts.create.reducer,
     createPurchase: endpoints.accounts.createPurchase.reducer,
     current: current.reducer,
+  }),
+  accountPurchases: combineReducers({
+    list: endpoints.accountPurchases.list.reducer,
   }),
 });
