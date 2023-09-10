@@ -16,3 +16,11 @@ export type FundAllocation = {
   created_at: string;
   updated_at: string;
 };
+
+export type FundReference = {
+  id: string;
+};
+
+export type CurrentState = {
+  currentFund?: FundReference;
+};

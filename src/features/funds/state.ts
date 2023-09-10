@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import { endpoints } from "./endpoints";
+import { slices } from "./slices";
 
 export const state = combineReducers({
   create: endpoints.create.reducer,
@@ -12,4 +13,5 @@ export const state = combineReducers({
     update: endpoints.allocations.update.reducer,
     delete: endpoints.allocations.delete.reducer,
   }),
+  current: slices.current.reducer,
 });
