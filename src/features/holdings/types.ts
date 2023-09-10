@@ -12,8 +12,15 @@ export type HoldingAccount = {
   available_cash: number;
 };
 
+export type Ticker = {
+  symbol: string;
+};
+
 export type HoldingAccountPurchase = {
   id: string;
+  ticker: Ticker;
+  price: number;
+  quantity: number;
 };
 
 export type AccountRequest = EndpointRequest & {
@@ -35,6 +42,17 @@ export type AccountsState = {
 export type AccountPurchasesState = {
   list: PaginatedEndpoint<HoldingAccountPurchase>;
 };
+
+export type AccountPosition = {
+  ticker: Ticker;
+  shares: number;
+  costBasis: number;
+};
+
+export type HoldingAccountPurchasesBySymbol = Record<
+  string,
+  HoldingAccountPurchase[]
+>;
 
 export type State = {
   accounts: AccountsState;
