@@ -3,7 +3,6 @@ import {
   ListAccountPurchasesRequest,
   CreateAccountRequest,
   CreatePurchaseRequest,
-  AccountRequest,
 } from "./endpoints";
 import { call, takeEvery } from "redux-saga/effects";
 import { authRequest } from "features/api";
@@ -13,6 +12,7 @@ import {
   EndpointAction,
 } from "features/api/endpoint";
 import { APIResponse } from "features/api/request";
+import { AccountRequest } from "./types";
 
 export function* accountsPage({ payload: request }: PaginatedEndpointAction) {
   const searchParams = paginatedSearchParams(request);

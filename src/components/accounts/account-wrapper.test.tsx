@@ -80,18 +80,6 @@ describe("AccountWrapper tests", () => {
       shallow(<AccountWrapper {...props} />);
     }).toThrowError("AccountWrapper component requires an 'id' parameter");
   });
-  it("selects the endpoint", () => {
-    mockSelector({});
-    useParams.mockReturnValue({ id: "account-id" });
-    shallow(<AccountWrapper {...props} />);
-
-    useSelector.mock.calls[0][0]({});
-    expect(selectors.holdings.accounts.get).toHaveBeenCalledTimes(1);
-    expect(selectors.holdings.accounts.get).toHaveBeenLastCalledWith(
-      {},
-      { id: "account-id" },
-    );
-  });
   it("fetches the entry and sets current account on mount and cleans up on unmount", () => {
     mockSelector({});
     useParams.mockReturnValue({ id: "account-id" });
@@ -99,7 +87,7 @@ describe("AccountWrapper tests", () => {
 
     const cleanup = useEffect.mock.calls[0][0]();
     expect(cleanup).not.toEqual(undefined);
-    expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch).toHaveBeenCalledTimes(3);
     expect(dispatch.mock.calls[0][0]).toEqual({
       type: "holdings.accounts.get/request",
       payload: {
@@ -112,17 +100,27 @@ describe("AccountWrapper tests", () => {
         id: "account-id",
       },
     });
+    expect(dispatch.mock.calls[2][0]).toEqual({
+      type: "holdings.accountPurchases.list/fetchPage",
+      payload: {
+        holdingAccountId: "account-id",
+        fetchAll: true,
+      },
+    });
 
     cleanup();
-    expect(dispatch).toHaveBeenCalledTimes(4);
-    expect(dispatch.mock.calls[2][0]).toEqual({
+    expect(dispatch).toHaveBeenCalledTimes(6);
+    expect(dispatch.mock.calls[3][0]).toEqual({
       type: "holdings.accounts.get/clear",
       payload: {
         id: "account-id",
       },
     });
-    expect(dispatch.mock.calls[3][0]).toEqual({
+    expect(dispatch.mock.calls[4][0]).toEqual({
       type: "holdings.accounts.current/setCurrentAccount",
+    });
+    expect(dispatch.mock.calls[5][0]).toEqual({
+      type: "holdings.accountPurchases.list/clear",
     });
   });
   it("renders nothing for empty endpoint", () => {

@@ -17,16 +17,21 @@ export const AccountWrapper: React.FC<Props> = ({}) => {
   }
 
   const request = useMemo(() => ({ id }), [id]);
-  const endpoint = useSelector((state: any) =>
-    selectors.holdings.accounts.get(state, request),
-  );
+  const endpoint = useSelector(selectors.holdings.accounts.get(request));
 
   useEffect(() => {
     dispatch(actions.holdings.accounts.get.request(request));
     dispatch(actions.holdings.accounts.current.setCurrentAccount(request));
+    dispatch(
+      actions.holdings.accountPurchases.list.fetchPage({
+        holdingAccountId: request.id,
+        fetchAll: true,
+      }),
+    );
     return () => {
       dispatch(actions.holdings.accounts.get.clear(request));
       dispatch(actions.holdings.accounts.current.setCurrentAccount(undefined));
+      dispatch(actions.holdings.accountPurchases.list.clear());
     };
   }, [dispatch, request]);
 
