@@ -4,6 +4,7 @@ import {
   HoldingAccountPurchase,
   AccountPosition,
   HoldingAccountPurchasesBySymbol,
+  Sale,
 } from "../types";
 import { createSelector } from "@reduxjs/toolkit";
 import { endpoints } from "../endpoints";
@@ -64,10 +65,58 @@ export const getPositions = createSelector(
   (purchasesBySymbol: HoldingAccountPurchasesBySymbol): AccountPosition[] => {
     const ret: AccountPosition[] = [];
     for (const symbol of Object.keys(purchasesBySymbol)) {
+      let heldPurchases: HoldingAccountPurchase[] = [];
+      const rawPurchases = purchasesBySymbol[symbol];
+      const chronologicalPurchases = rawPurchases.slice().reverse();
+      const sales: Sale[] = [];
+      for (const purchase of chronologicalPurchases) {
+        if (purchase.quantity > 0) {
+          heldPurchases.push(purchase);
+          continue;
+        }
+
+        let remaining = -1 * purchase.quantity;
+        let head = 0;
+        for (const heldPurchase of heldPurchases) {
+          if (heldPurchase.quantity < remaining) {
+            remaining -= heldPurchase.quantity;
+            sales.push({
+              ticker: { symbol },
+              buy: heldPurchase,
+              sell: {
+                ...purchase,
+                quantity: heldPurchase.quantity,
+              },
+            });
+            head++;
+            continue;
+          }
+
+          sales.push({
+            ticker: { symbol },
+            buy: {
+              ...heldPurchase,
+              quantity: remaining,
+            },
+            sell: {
+              ...purchase,
+              quantity: remaining,
+            },
+          });
+          heldPurchase.quantity -= remaining;
+          if (heldPurchase.quantity === 0) {
+            head++;
+          }
+
+          break;
+        }
+
+        heldPurchases = heldPurchases.slice(head);
+      }
+
       let shares = 0;
       let cost = 0;
-      const symbolPurchases = purchasesBySymbol[symbol];
-      for (const purchase of symbolPurchases) {
+      for (const purchase of heldPurchases) {
         shares += purchase.quantity;
         cost += purchase.quantity * purchase.price;
       }
@@ -75,7 +124,10 @@ export const getPositions = createSelector(
       ret.push({
         ticker: { symbol },
         shares,
-        costBasis: cost / shares,
+        costBasis: shares > 0 ? cost / shares : 0,
+        rawPurchases,
+        heldPurchases: heldPurchases.reverse(),
+        sales,
       });
     }
 
