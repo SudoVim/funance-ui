@@ -43,10 +43,19 @@ export type AccountPurchasesState = {
   list: PaginatedEndpoint<HoldingAccountPurchase>;
 };
 
+export type Sale = {
+  ticker: Ticker;
+  buy: HoldingAccountPurchase;
+  sell: HoldingAccountPurchase;
+};
+
 export type AccountPosition = {
   ticker: Ticker;
   shares: number;
   costBasis: number;
+  rawPurchases: HoldingAccountPurchase[];
+  heldPurchases: HoldingAccountPurchase[];
+  sales: Sale[];
 };
 
 export type HoldingAccountPurchasesBySymbol = Record<

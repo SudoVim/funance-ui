@@ -170,6 +170,9 @@ describe("getPositions tests", () => {
         },
         shares: 3,
         costBasis: 234,
+        rawPurchases: purchasesBySymbol.AAPL,
+        heldPurchases: purchasesBySymbol.AAPL,
+        sales: [],
       },
       {
         ticker: {
@@ -177,6 +180,235 @@ describe("getPositions tests", () => {
         },
         shares: 7,
         costBasis: (123 * 5 + 121 * 2) / 7,
+        rawPurchases: purchasesBySymbol.MSFT,
+        heldPurchases: purchasesBySymbol.MSFT,
+        sales: [],
+      },
+    ]);
+  });
+  it("sells partial position", () => {
+    const purchasesBySymbol = {
+      MSFT: [
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: -2,
+          price: 121,
+        },
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: 5,
+          price: 123,
+        },
+      ],
+    };
+    const cmpPositions = getPositions.resultFunc(purchasesBySymbol);
+    expect(cmpPositions).toEqual([
+      {
+        ticker: {
+          symbol: "MSFT",
+        },
+        shares: 3,
+        costBasis: 123,
+        rawPurchases: purchasesBySymbol.MSFT,
+        heldPurchases: [
+          {
+            ticker: { symbol: "MSFT" },
+            quantity: 3,
+            price: 123,
+          },
+        ],
+        sales: [
+          {
+            ticker: { symbol: "MSFT" },
+            buy: {
+              price: 123,
+              quantity: 2,
+              ticker: { symbol: "MSFT" },
+            },
+            sell: {
+              price: 121,
+              quantity: 2,
+              ticker: { symbol: "MSFT" },
+            },
+          },
+        ],
+      },
+    ]);
+  });
+  it("sells full position", () => {
+    const purchasesBySymbol = {
+      MSFT: [
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: -5,
+          price: 121,
+        },
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: 5,
+          price: 123,
+        },
+      ],
+    };
+    const cmpPositions = getPositions.resultFunc(purchasesBySymbol);
+    expect(cmpPositions).toEqual([
+      {
+        ticker: {
+          symbol: "MSFT",
+        },
+        shares: 0,
+        costBasis: 0,
+        rawPurchases: purchasesBySymbol.MSFT,
+        heldPurchases: [],
+        sales: [
+          {
+            ticker: { symbol: "MSFT" },
+            buy: {
+              price: 123,
+              quantity: 5,
+              ticker: { symbol: "MSFT" },
+            },
+            sell: {
+              price: 121,
+              quantity: 5,
+              ticker: { symbol: "MSFT" },
+            },
+          },
+        ],
+      },
+    ]);
+  });
+  it("sells overlapping multiple purchases", () => {
+    const purchasesBySymbol = {
+      MSFT: [
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: -5,
+          price: 121,
+        },
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: 2,
+          price: 123,
+        },
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: 4,
+          price: 122,
+        },
+      ],
+    };
+    const cmpPositions = getPositions.resultFunc(purchasesBySymbol);
+    expect(cmpPositions).toEqual([
+      {
+        ticker: {
+          symbol: "MSFT",
+        },
+        shares: 1,
+        costBasis: 123,
+        rawPurchases: purchasesBySymbol.MSFT,
+        heldPurchases: [
+          {
+            ticker: { symbol: "MSFT" },
+            price: 123,
+            quantity: 1,
+          },
+        ],
+        sales: [
+          {
+            ticker: { symbol: "MSFT" },
+            buy: {
+              price: 122,
+              quantity: 4,
+              ticker: { symbol: "MSFT" },
+            },
+            sell: {
+              price: 121,
+              quantity: 4,
+              ticker: { symbol: "MSFT" },
+            },
+          },
+          {
+            ticker: { symbol: "MSFT" },
+            buy: {
+              price: 123,
+              quantity: 1,
+              ticker: { symbol: "MSFT" },
+            },
+            sell: {
+              price: 121,
+              quantity: 1,
+              ticker: { symbol: "MSFT" },
+            },
+          },
+        ],
+      },
+    ]);
+  });
+  it("sells multiple of same purchase", () => {
+    const purchasesBySymbol = {
+      MSFT: [
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: -1,
+          price: 121,
+        },
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: -1,
+          price: 121,
+        },
+        {
+          ticker: { symbol: "MSFT" },
+          quantity: 4,
+          price: 122,
+        },
+      ],
+    };
+    const cmpPositions = getPositions.resultFunc(purchasesBySymbol);
+    expect(cmpPositions).toEqual([
+      {
+        ticker: {
+          symbol: "MSFT",
+        },
+        shares: 2,
+        costBasis: 122,
+        rawPurchases: purchasesBySymbol.MSFT,
+        heldPurchases: [
+          {
+            ticker: { symbol: "MSFT" },
+            price: 122,
+            quantity: 2,
+          },
+        ],
+        sales: [
+          {
+            ticker: { symbol: "MSFT" },
+            buy: {
+              price: 122,
+              quantity: 1,
+              ticker: { symbol: "MSFT" },
+            },
+            sell: {
+              price: 121,
+              quantity: 1,
+              ticker: { symbol: "MSFT" },
+            },
+          },
+          {
+            ticker: { symbol: "MSFT" },
+            buy: {
+              price: 122,
+              quantity: 1,
+              ticker: { symbol: "MSFT" },
+            },
+            sell: {
+              price: 121,
+              quantity: 1,
+              ticker: { symbol: "MSFT" },
+            },
+          },
+        ],
       },
     ]);
   });
