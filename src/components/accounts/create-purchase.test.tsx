@@ -65,6 +65,7 @@ describe("CreatePurchase tests", () => {
   let dispatch = null;
   let navigate = null;
   let dayjsToISOString = null;
+  let dateObj = null;
   beforeEach(() => {
     props = {};
     dispatch = vi.fn();
@@ -77,9 +78,10 @@ describe("CreatePurchase tests", () => {
     useNavigate.mockReturnValue(navigate);
     dayjsToISOString = vi.fn();
     dayjs.mockReset();
-    dayjs.mockReturnValue({
+    dateObj = {
       toISOString: dayjsToISOString,
-    });
+    };
+    dayjs.mockReturnValue(dateObj);
   });
   it("throws exception if there is no current account set", () => {
     mockSelector({});
@@ -170,9 +172,11 @@ describe("CreatePurchase tests", () => {
       .at(1)
       .props()
       .onChange({ target: { value: "123.45" } });
-    expect(component.find(DatePicker).props().value).toEqual("2023-08-19");
+    expect(component.find(DatePicker).props().value).toEqual(dateObj);
 
-    component.find(DatePicker).props().onChange("2023-08-18");
+    const newToString = vi.fn();
+    newToString.mockReturnValue("2023-08-18");
+    component.find(DatePicker).props().onChange({ toISOString: newToString });
 
     expect(component.find(Submit).props().disabled).toEqual(false);
 
@@ -215,7 +219,7 @@ describe("CreatePurchase tests", () => {
       .at(1)
       .props()
       .onChange({ target: { value: "123.45" } });
-    expect(component.find(DatePicker).props().value).toEqual("2023-08-19");
+    expect(component.find(DatePicker).props().value).toEqual(dateObj);
 
     const toISOString = vi.fn();
     toISOString.mockReturnValue("2023-08-18");

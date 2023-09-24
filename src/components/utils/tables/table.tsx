@@ -36,10 +36,6 @@ export function Table<T>({ results, headers, getRow }: Props<T>) {
     throw new Error("unexpectedly received empty headers array");
   }
 
-  if (results.length === 0) {
-    return <Box sx={{ typography: "body2" }}>No results</Box>;
-  }
-
   const renderRow = useCallback(
     (result: T) => {
       const { key, link, cells } = getRow(result);
@@ -68,6 +64,10 @@ export function Table<T>({ results, headers, getRow }: Props<T>) {
     },
     [getRow, headers],
   );
+
+  if (results.length === 0) {
+    return <Box sx={{ typography: "body2" }}>No results</Box>;
+  }
 
   return (
     <TableContainer component={Paper}>

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { selectors } from "features";
 import { Box, Button } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { PositionTable } from "./position-table";
 
 export type Props = {};
 
@@ -24,6 +25,7 @@ export const Account: React.FC<Props> = ({}) => {
         </RouterLink>
       </Box>
       <Box sx={{ typography: "h3" }}>{account.name}</Box>
+      <PositionTable />
     </Box>
   );
 };
