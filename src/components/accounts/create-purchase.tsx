@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectors, actions } from "features";
 import {
@@ -45,6 +45,12 @@ export const CreatePurchase: React.FC<Props> = ({}) => {
       return;
     }
 
+    dispatch(
+      actions.holdings.accountPurchases.list.fetchPage({
+        holdingAccountId: account.id,
+        fetchAll: true,
+      }),
+    );
     navigate(`/app/accounts/${encodeURIComponent(account.id)}`);
   }, [endpoint, account.id]);
 
@@ -58,6 +64,7 @@ export const CreatePurchase: React.FC<Props> = ({}) => {
     price === 0 ||
     purchasedAt === "" ||
     endpoint.isLoading;
+  const purchasedAtDate = useMemo(() => dayjs(purchasedAt), [purchasedAt]);
 
   return (
     <Box
@@ -123,8 +130,10 @@ export const CreatePurchase: React.FC<Props> = ({}) => {
             />
           </FormControl>
           <DatePicker
-            value={purchasedAt}
-            onChange={(newPurchasedAt) => setPurchasedAt(newPurchasedAt || "")}
+            value={purchasedAtDate}
+            onChange={(newPurchasedAt) =>
+              setPurchasedAt(newPurchasedAt?.toISOString() || "")
+            }
           />
           <Submit text="Create" disabled={createDisabled} />
         </FormGrid>
