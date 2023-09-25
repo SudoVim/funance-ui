@@ -1,5 +1,5 @@
 import { endpoints } from "./endpoints";
-import { current } from "./state";
+import { current, currentPosition } from "./state";
 
 export const actions = {
   accounts: {
@@ -11,5 +11,8 @@ export const actions = {
   },
   accountPurchases: {
     list: endpoints.accountPurchases.list.actions,
+  },
+  positions: {
+    current: currentPosition.actions,
   },
 };

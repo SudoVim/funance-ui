@@ -1,7 +1,7 @@
 import { accounts } from "./accounts";
-import { accountPurchases } from "./account-purchases";
+import { selectors as positions } from "./account-positions";
 
 export const selectors = {
   accounts,
-  accountPurchases,
+  positions,
 };

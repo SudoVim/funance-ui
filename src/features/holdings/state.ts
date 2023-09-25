@@ -1,7 +1,12 @@
 import { combineReducers } from "redux";
 import { endpoints } from "./endpoints";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CurrentState, AccountRequest } from "./types";
+import {
+  CurrentState,
+  AccountRequest,
+  Ticker,
+  CurrentPositionState,
+} from "./types";
 
 export const current = createSlice({
   name: "holdings.accounts.current",
@@ -16,6 +21,19 @@ export const current = createSlice({
   },
 });
 
+export const currentPosition = createSlice({
+  name: "holdings.accounts.positions.current",
+  initialState: {},
+  reducers: {
+    setCurrentPosition: (
+      state: CurrentPositionState,
+      { payload: currentPosition }: PayloadAction<Ticker | undefined>,
+    ) => {
+      state.currentPosition = currentPosition;
+    },
+  },
+});
+
 export const state = combineReducers({
   accounts: combineReducers({
     list: endpoints.accounts.list.reducer,
@@ -26,5 +44,8 @@ export const state = combineReducers({
   }),
   accountPurchases: combineReducers({
     list: endpoints.accountPurchases.list.reducer,
+  }),
+  positions: combineReducers({
+    current: currentPosition.reducer,
   }),
 });

@@ -21,6 +21,8 @@ export type HoldingAccountPurchase = {
   ticker: Ticker;
   price: number;
   quantity: number;
+  purchased_at: string;
+  created_at: string;
 };
 
 export type AccountRequest = EndpointRequest & {
@@ -29,6 +31,10 @@ export type AccountRequest = EndpointRequest & {
 
 export type CurrentState = {
   currentAccount?: AccountRequest;
+};
+
+export type CurrentPositionState = {
+  currentPosition?: Ticker;
 };
 
 export type AccountsState = {
@@ -63,7 +69,16 @@ export type HoldingAccountPurchasesBySymbol = Record<
   HoldingAccountPurchase[]
 >;
 
+export type HoldingAccountPositionsBySymbol = Record<string, AccountPosition>;
+
+export type AccountPositionsState = {
+  current: {
+    currentPosition?: Ticker;
+  };
+};
+
 export type State = {
   accounts: AccountsState;
   accountPurchases: AccountPurchasesState;
+  positions: AccountPositionsState;
 };
