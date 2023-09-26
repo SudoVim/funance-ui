@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectors } from "features";
 import { Table } from "components/utils";
 import { AccountPosition } from "features/holdings/types";
@@ -26,13 +26,15 @@ const HEADERS = [
 ];
 
 export const PositionTable: React.FC<Props> = ({}: Props) => {
-  const sortedPositions = useSelector(
-    selectors.holdings.accountPurchases.sortedPositions,
-  );
+  const account = useSelector(selectors.holdings.accounts.current);
+  const sortedPositions = useSelector(selectors.holdings.positions.sorted);
 
   const getRow = useCallback(
     (result: AccountPosition) => ({
       key: result.ticker.symbol,
+      link: `/app/accounts/${encodeURIComponent(
+        account?.id || "",
+      )}/positions/${encodeURIComponent(result.ticker.symbol)}`,
       cells: {
         symbol: result.ticker.symbol,
         shares: result.shares,
@@ -40,8 +42,14 @@ export const PositionTable: React.FC<Props> = ({}: Props) => {
         costBasis: `$${(result.shares * result.costBasis).toFixed(2)}`,
       },
     }),
-    [],
+    [account],
   );
+
+  if (!account || !sortedPositions) {
+    throw new Error(
+      "necessary current values must be configured to render PositionTable",
+    );
+  }
 
   return (
     <Table<AccountPosition>
