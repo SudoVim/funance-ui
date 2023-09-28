@@ -29,7 +29,7 @@ export const getPositions = createSelector(
         let head = 0;
         const update = {};
         for (const heldPurchase of heldPurchases) {
-          if (heldPurchase.quantity < remaining) {
+          if (heldPurchase.quantity <= remaining) {
             remaining -= heldPurchase.quantity;
             sales.push({
               ticker: { symbol },
