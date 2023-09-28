@@ -27,8 +27,9 @@ export const getPositions = createSelector(
 
         let remaining = -1 * purchase.quantity;
         let head = 0;
+        const update: any = {};
         for (const heldPurchase of heldPurchases) {
-          if (heldPurchase.quantity < remaining) {
+          if (heldPurchase.quantity <= remaining) {
             remaining -= heldPurchase.quantity;
             sales.push({
               ticker: { symbol },
@@ -53,7 +54,7 @@ export const getPositions = createSelector(
               quantity: remaining,
             },
           });
-          heldPurchase.quantity -= remaining;
+          update.quantity = heldPurchase.quantity - remaining;
           if (heldPurchase.quantity === 0) {
             head++;
           }
@@ -62,6 +63,14 @@ export const getPositions = createSelector(
         }
 
         heldPurchases = heldPurchases.slice(head);
+        if (heldPurchases.length === 0) {
+          continue;
+        }
+
+        heldPurchases[0] = {
+          ...heldPurchases[0],
+          ...update,
+        };
       }
 
       let shares = 0;
