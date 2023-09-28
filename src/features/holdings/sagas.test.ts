@@ -6,6 +6,8 @@ import {
   createAccount,
   accountPurchasesPage,
   createAccountPurchase,
+  getPurchase,
+  deletePurchase,
 } from "./sagas";
 import { authRequest } from "features/api";
 import { endpoints } from "./endpoints";
@@ -135,6 +137,48 @@ describe("test createAccountPurchase", () => {
       })
       .next(response)
       .call(endpoints.accounts.createPurchase.handleResponse, {
+        request,
+        response,
+      })
+      .next()
+      .isDone();
+  });
+});
+
+describe("test getPurchase", () => {
+  it("fetches a purchase", () => {
+    const request = { id: "purchase%id" };
+    const response = {};
+    const saga = getPurchase;
+    testSaga(saga, { payload: request })
+      .next()
+      .call(authRequest, {
+        path: "/holding_account_purchases/purchase%25id/",
+        method: "GET",
+      })
+      .next(response)
+      .call(endpoints.accountPurchases.get.handleResponse, {
+        request,
+        response,
+      })
+      .next()
+      .isDone();
+  });
+});
+
+describe("test deletePurchase", () => {
+  it("fetches a purchase", () => {
+    const request = { id: "purchase%id" };
+    const response = {};
+    const saga = deletePurchase;
+    testSaga(saga, { payload: request })
+      .next()
+      .call(authRequest, {
+        path: "/holding_account_purchases/purchase%25id/",
+        method: "DELETE",
+      })
+      .next(response)
+      .call(endpoints.accountPurchases.delete.handleResponse, {
         request,
         response,
       })
