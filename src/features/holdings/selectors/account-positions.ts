@@ -27,7 +27,7 @@ export const getPositions = createSelector(
 
         let remaining = -1 * purchase.quantity;
         let head = 0;
-        const update = {};
+        const update: any = {};
         for (const heldPurchase of heldPurchases) {
           if (heldPurchase.quantity <= remaining) {
             remaining -= heldPurchase.quantity;
