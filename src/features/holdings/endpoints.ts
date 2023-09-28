@@ -44,6 +44,16 @@ export function getCreatePurchaseKeyFromRequest({
   return account;
 }
 
+export type PurchaseReference = {
+  id: string;
+};
+
+export type PurchaseRequest = EndpointRequest & PurchaseReference;
+
+export function getPurchaseKeyFromRequest({ id }: PurchaseReference) {
+  return id;
+}
+
 export const endpoints = {
   accounts: {
     list: createPaginatedEndpointSlice<ListAccountsRequest, HoldingAccount>({
@@ -70,6 +80,14 @@ export const endpoints = {
       HoldingAccountPurchase
     >({
       name: "holdings.accountPurchases.list",
+    }),
+    get: createIndirectEndpointSlice<PurchaseRequest, HoldingAccountPurchase>({
+      name: "holdings.accountPurchases.get",
+      getKeyFromRequest: getPurchaseKeyFromRequest,
+    }),
+    delete: createIndirectEndpointSlice<PurchaseRequest>({
+      name: "holdings.accountPurchases.delete",
+      getKeyFromRequest: getPurchaseKeyFromRequest,
     }),
   },
 };

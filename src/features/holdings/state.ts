@@ -44,6 +44,8 @@ export const state = combineReducers({
   }),
   accountPurchases: combineReducers({
     list: endpoints.accountPurchases.list.reducer,
+    get: endpoints.accountPurchases.get.reducer,
+    delete: endpoints.accountPurchases.delete.reducer,
   }),
   positions: combineReducers({
     current: currentPosition.reducer,

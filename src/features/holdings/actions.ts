@@ -11,6 +11,8 @@ export const actions = {
   },
   accountPurchases: {
     list: endpoints.accountPurchases.list.actions,
+    get: endpoints.accountPurchases.get.actions,
+    delete: endpoints.accountPurchases.delete.actions,
   },
   positions: {
     current: currentPosition.actions,

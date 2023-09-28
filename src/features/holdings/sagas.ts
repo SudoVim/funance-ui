@@ -3,6 +3,7 @@ import {
   ListAccountPurchasesRequest,
   CreateAccountRequest,
   CreatePurchaseRequest,
+  PurchaseRequest,
 } from "./endpoints";
 import { call, takeEvery } from "redux-saga/effects";
 import { authRequest } from "features/api";
@@ -86,6 +87,34 @@ export function* accountPurchasesPage({
   });
 }
 
+export function* getPurchase({
+  payload: request,
+}: EndpointAction<PurchaseRequest>) {
+  const { id } = request;
+  const response: APIResponse = yield call(authRequest, {
+    path: `/holding_account_purchases/${encodeURIComponent(id)}/`,
+    method: "GET",
+  });
+  yield call(endpoints.accountPurchases.get.handleResponse, {
+    request,
+    response,
+  });
+}
+
+export function* deletePurchase({
+  payload: request,
+}: EndpointAction<PurchaseRequest>) {
+  const { id } = request;
+  const response: APIResponse = yield call(authRequest, {
+    path: `/holding_account_purchases/${encodeURIComponent(id)}/`,
+    method: "DELETE",
+  });
+  yield call(endpoints.accountPurchases.delete.handleResponse, {
+    request,
+    response,
+  });
+}
+
 export function* sagas() {
   yield takeEvery("holdings.accounts.list/fetchPage", accountsPage);
   yield takeEvery("holdings.accounts.get/request", getAccount);
@@ -98,4 +127,6 @@ export function* sagas() {
     "holdings.accountPurchases.list/fetchPage",
     accountPurchasesPage,
   );
+  yield takeEvery("holdings.accountPurchases.get/request", getPurchase);
+  yield takeEvery("holdings.accountPurchases.delete/request", deletePurchase);
 }
