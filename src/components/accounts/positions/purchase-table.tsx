@@ -4,6 +4,7 @@ import { selectors } from "features";
 import { Table } from "components/utils";
 import dayjs from "dayjs";
 import { HoldingAccountPurchase } from "features/holdings/types";
+import { DeletePurchaseButton } from "./delete-purchase-button";
 
 export type Props = {};
 
@@ -28,6 +29,10 @@ const HEADERS = [
     key: "total",
     name: "Total",
   },
+  {
+    key: "delete",
+    name: "",
+  },
 ];
 
 export const PurchaseTable: React.FC<Props> = ({}: Props) => {
@@ -42,6 +47,7 @@ export const PurchaseTable: React.FC<Props> = ({}: Props) => {
         quantity: result.quantity,
         price: `$${result.price.toFixed(2)}`,
         total: `$${(result.quantity * result.price).toFixed(2)}`,
+        delete: <DeletePurchaseButton id={result.id} />,
       },
     }),
     [],

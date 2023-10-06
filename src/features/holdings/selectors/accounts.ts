@@ -22,7 +22,7 @@ function getAccount(state: State, request: AccountRequest) {
   );
 }
 
-export function getCurrentAccount(state: State) {
+export function getCurrentAccount(state: State): HoldingAccount | undefined {
   const request = state.holdings.accounts.current.currentAccount;
   if (!request) {
     return undefined;

@@ -5,7 +5,7 @@ import {
   HoldingAccountPurchasesBySymbol,
 } from "../types";
 import { createSelector } from "@reduxjs/toolkit";
-import { endpoints } from "../endpoints";
+import { endpoints, PurchaseReference } from "../endpoints";
 
 export function getPurchasesEndpoint(
   state: State,
@@ -57,3 +57,19 @@ export const getPurchasesBySymbol = createSelector(
     return purchasesBySymbol;
   },
 );
+
+export function getDeleteEndpoint(state: State) {
+  return state.holdings.accountPurchases.delete;
+}
+
+export function getDeleteEndpointEntry(state: State, ref: PurchaseReference) {
+  const endpoint = getDeleteEndpoint(state);
+  return endpoints.accountPurchases.delete.getEndpoint(endpoint, ref);
+}
+
+export const selectors = {
+  delete: {
+    get: (ref: PurchaseReference) => (state: State) =>
+      getDeleteEndpointEntry(state, ref),
+  },
+};

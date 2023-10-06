@@ -101,11 +101,8 @@ describe("AccountWrapper tests", () => {
       },
     });
     expect(dispatch.mock.calls[2][0]).toEqual({
-      type: "holdings.accountPurchases.list/fetchPage",
-      payload: {
-        holdingAccountId: "account-id",
-        fetchAll: true,
-      },
+      type: "holdings.accountPurchases/reload",
+      payload: "account-id",
     });
 
     cleanup();

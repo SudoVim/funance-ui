@@ -55,16 +55,15 @@ describe("PurchaseTable tests", () => {
     mockSelector({ position });
     const component = shallow(<PurchaseTable />);
     expect(component.find("Table")).toHaveLength(1);
-    const cmpRow = component
-      .find("Table")
-      .props()
-      .getRow({
-        id: "purchase-id",
-        purchased_at: "2023-09-25",
-        ticker: { symbol: "TSLA" },
-        quantity: 7,
-        price: 201.734,
-      });
+    const result = {
+      id: "purchase-id",
+      purchased_at: "2023-09-25",
+      ticker: { symbol: "TSLA" },
+      quantity: 7,
+      price: 201.734,
+    };
+    const cmpRow = component.find("Table").props().getRow(result);
+    const { delete: deleteEntry } = cmpRow.cells;
     expect(cmpRow).toEqual({
       key: "purchase-id",
       cells: {
@@ -73,7 +72,9 @@ describe("PurchaseTable tests", () => {
         quantity: 7,
         symbol: "TSLA",
         total: "$1412.14",
+        delete: deleteEntry,
       },
     });
+    expect(deleteEntry.props.id).toEqual("purchase-id");
   });
 });

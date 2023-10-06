@@ -22,12 +22,7 @@ export const AccountWrapper: React.FC<Props> = ({}) => {
   useEffect(() => {
     dispatch(actions.holdings.accounts.get.request(request));
     dispatch(actions.holdings.accounts.current.setCurrentAccount(request));
-    dispatch(
-      actions.holdings.accountPurchases.list.fetchPage({
-        holdingAccountId: request.id,
-        fetchAll: true,
-      }),
-    );
+    dispatch(actions.holdings.accountPurchases.reload(request.id));
     return () => {
       dispatch(actions.holdings.accounts.get.clear(request));
       dispatch(actions.holdings.accounts.current.setCurrentAccount(undefined));

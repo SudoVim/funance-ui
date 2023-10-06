@@ -13,6 +13,10 @@ export const actions = {
     list: endpoints.accountPurchases.list.actions,
     get: endpoints.accountPurchases.get.actions,
     delete: endpoints.accountPurchases.delete.actions,
+    reload: (accountId?: string) => ({
+      type: "holdings.accountPurchases/reload",
+      payload: accountId,
+    }),
   },
   positions: {
     current: currentPosition.actions,

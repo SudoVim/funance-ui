@@ -8,9 +8,11 @@ import {
   createAccountPurchase,
   getPurchase,
   deletePurchase,
+  reloadPurchases,
 } from "./sagas";
 import { authRequest } from "features/api";
 import { endpoints } from "./endpoints";
+import { selectors } from "./selectors";
 
 describe("test accountsPage", () => {
   it("fetches a page", () => {
@@ -181,6 +183,46 @@ describe("test deletePurchase", () => {
       .call(endpoints.accountPurchases.delete.handleResponse, {
         request,
         response,
+      })
+      .next()
+      .isDone();
+  });
+});
+
+describe("test reloadPurchases", () => {
+  it("does nothing if no account ID is given and no current account is configured", () => {
+    const accountId = undefined;
+    const account = undefined;
+    const saga = reloadPurchases;
+    testSaga(saga, { payload: accountId })
+      .next()
+      .select(selectors.accounts.current)
+      .next(account)
+      .isDone();
+  });
+  it("reloads purchases for the current account", () => {
+    const accountId = undefined;
+    const account = { id: "account-id" };
+    const saga = reloadPurchases;
+    testSaga(saga, { payload: accountId })
+      .next()
+      .select(selectors.accounts.current)
+      .next(account)
+      .put({
+        type: "holdings.accountPurchases.list/fetchPage",
+        payload: { holdingAccountId: "account-id", fetchAll: true },
+      })
+      .next()
+      .isDone();
+  });
+  it("reloads purchases for the given account id", () => {
+    const accountId = "account-id";
+    const saga = reloadPurchases;
+    testSaga(saga, { payload: accountId })
+      .next()
+      .put({
+        type: "holdings.accountPurchases.list/fetchPage",
+        payload: { holdingAccountId: "account-id", fetchAll: true },
       })
       .next()
       .isDone();
