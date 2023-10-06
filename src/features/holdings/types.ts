@@ -47,6 +47,7 @@ export type AccountsState = {
 
 export type AccountPurchasesState = {
   list: PaginatedEndpoint<HoldingAccountPurchase>;
+  delete: IndirectEndpoint;
 };
 
 export type Sale = {

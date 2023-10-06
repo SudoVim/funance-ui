@@ -5,7 +5,7 @@ import {
   CreatePurchaseRequest,
   PurchaseRequest,
 } from "./endpoints";
-import { call, takeEvery } from "redux-saga/effects";
+import { call, takeEvery, select, put } from "redux-saga/effects";
 import { authRequest } from "features/api";
 import {
   paginatedSearchParams,
@@ -13,7 +13,10 @@ import {
   EndpointAction,
 } from "features/api/endpoint";
 import { APIResponse } from "features/api/request";
-import { AccountRequest } from "./types";
+import { AccountRequest, HoldingAccount } from "./types";
+import { selectors } from "./selectors";
+import { actions } from "./actions";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 export function* accountsPage({ payload: request }: PaginatedEndpointAction) {
   const searchParams = paginatedSearchParams(request);
@@ -115,6 +118,29 @@ export function* deletePurchase({
   });
 }
 
+export function* reloadPurchases({
+  payload: accountId,
+}: PayloadAction<string | undefined>) {
+  let id = accountId;
+  if (!id) {
+    const account: HoldingAccount | undefined = yield select(
+      selectors.accounts.current,
+    );
+    if (!account) {
+      return;
+    }
+
+    id = account.id;
+  }
+
+  yield put(
+    actions.accountPurchases.list.fetchPage({
+      holdingAccountId: id,
+      fetchAll: true,
+    }),
+  );
+}
+
 export function* sagas() {
   yield takeEvery("holdings.accounts.list/fetchPage", accountsPage);
   yield takeEvery("holdings.accounts.get/request", getAccount);
@@ -129,4 +155,5 @@ export function* sagas() {
   );
   yield takeEvery("holdings.accountPurchases.get/request", getPurchase);
   yield takeEvery("holdings.accountPurchases.delete/request", deletePurchase);
+  yield takeEvery("holdings.accountPurchases/reload", reloadPurchases);
 }
