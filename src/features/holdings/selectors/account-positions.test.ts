@@ -38,6 +38,7 @@ describe("getPositions tests", () => {
         costBasis: 234,
         rawPurchases: purchasesBySymbol.AAPL,
         heldPurchases: purchasesBySymbol.AAPL,
+        profit: 0,
         sales: [],
       },
       {
@@ -48,6 +49,7 @@ describe("getPositions tests", () => {
         costBasis: (123 * 5 + 121 * 2) / 7,
         rawPurchases: purchasesBySymbol.MSFT,
         heldPurchases: purchasesBySymbol.MSFT,
+        profit: 0,
         sales: [],
       },
     ]);
@@ -83,6 +85,7 @@ describe("getPositions tests", () => {
             price: 123,
           },
         ],
+        profit: -4,
         sales: [
           {
             ticker: { symbol: "MSFT" },
@@ -126,6 +129,7 @@ describe("getPositions tests", () => {
         costBasis: 0,
         rawPurchases: purchasesBySymbol.MSFT,
         heldPurchases: [],
+        profit: -10,
         sales: [
           {
             ticker: { symbol: "MSFT" },
@@ -180,6 +184,7 @@ describe("getPositions tests", () => {
             quantity: 1,
           },
         ],
+        profit: -6,
         sales: [
           {
             ticker: { symbol: "MSFT" },
@@ -247,6 +252,7 @@ describe("getPositions tests", () => {
             quantity: 2,
           },
         ],
+        profit: -2,
         sales: [
           {
             ticker: { symbol: "MSFT" },

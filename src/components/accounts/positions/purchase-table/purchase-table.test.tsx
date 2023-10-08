@@ -5,6 +5,7 @@ import { shallow } from "enzyme";
 import { ColoredText } from "./colored-text";
 import { FixedNumber } from "./fixed-number";
 import { DeletePurchaseButton } from "./delete-purchase-button";
+import { Box } from "@mui/material";
 
 import { PurchaseTable } from "./purchase-table";
 
@@ -85,11 +86,8 @@ describe("PurchaseTable tests", () => {
       total,
       delete: deleteComp,
     } = cells;
-    expect(purchasedAt.type).toEqual(ColoredText);
-    expect(purchasedAt.props).toEqual({
-      purchaseType: "BUY",
-      text: "09/25/2023",
-    });
+    expect(purchasedAt.type).toEqual(Box);
+    expect(purchasedAt.props.children).toEqual("09/25/2023");
     expect(typeComp.type).toEqual(ColoredText);
     expect(typeComp.props).toEqual({
       purchaseType: "BUY",
@@ -97,19 +95,16 @@ describe("PurchaseTable tests", () => {
     });
     expect(quantity.type).toEqual(FixedNumber);
     expect(quantity.props).toEqual({
-      purchaseType: "BUY",
       num: 7,
     });
     expect(price.type).toEqual(FixedNumber);
     expect(price.props).toEqual({
-      purchaseType: "BUY",
       prefix: "$",
       num: 201.734,
       fixed: 2,
     });
     expect(total.type).toEqual(FixedNumber);
     expect(total.props).toEqual({
-      purchaseType: "BUY",
       prefix: "$",
       num: 1412.1380000000001,
       fixed: 2,
@@ -151,11 +146,8 @@ describe("PurchaseTable tests", () => {
       total,
       delete: deleteComp,
     } = cells;
-    expect(purchasedAt.type).toEqual(ColoredText);
-    expect(purchasedAt.props).toEqual({
-      purchaseType: "SELL",
-      text: "09/25/2023",
-    });
+    expect(purchasedAt.type).toEqual(Box);
+    expect(purchasedAt.props.children).toEqual("09/25/2023");
     expect(typeComp.type).toEqual(ColoredText);
     expect(typeComp.props).toEqual({
       purchaseType: "SELL",
@@ -163,19 +155,16 @@ describe("PurchaseTable tests", () => {
     });
     expect(quantity.type).toEqual(FixedNumber);
     expect(quantity.props).toEqual({
-      purchaseType: "SELL",
       num: -7,
     });
     expect(price.type).toEqual(FixedNumber);
     expect(price.props).toEqual({
-      purchaseType: "SELL",
       prefix: "$",
       num: 201.734,
       fixed: 2,
     });
     expect(total.type).toEqual(FixedNumber);
     expect(total.props).toEqual({
-      purchaseType: "SELL",
       prefix: "$",
       num: -1412.1380000000001,
       fixed: 2,

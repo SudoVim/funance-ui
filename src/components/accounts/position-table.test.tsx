@@ -72,6 +72,7 @@ describe("PositionTable tests", () => {
         ticker: {
           symbol: "$HEL",
         },
+        profit: 7,
         shares: 3,
         costBasis: 63.479,
       });
@@ -83,6 +84,7 @@ describe("PositionTable tests", () => {
         costBasisPerShare: "$63.48",
         shares: 3,
         symbol: "$HEL",
+        profit: "$7.00",
       },
     });
   });

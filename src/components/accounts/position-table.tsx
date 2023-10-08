@@ -23,6 +23,10 @@ const HEADERS = [
     key: "costBasis",
     name: "Cost Basis",
   },
+  {
+    key: "profit",
+    name: "Profit",
+  },
 ];
 
 export const PositionTable: React.FC<Props> = ({}: Props) => {
@@ -40,6 +44,7 @@ export const PositionTable: React.FC<Props> = ({}: Props) => {
         shares: result.shares,
         costBasisPerShare: `$${result.costBasis.toFixed(2)}`,
         costBasis: `$${(result.shares * result.costBasis).toFixed(2)}`,
+        profit: `$${result.profit.toFixed(2)}`,
       },
     }),
     [account],

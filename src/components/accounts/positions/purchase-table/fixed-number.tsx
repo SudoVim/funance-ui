@@ -1,23 +1,18 @@
 import React from "react";
 import { ColoredText } from "./colored-text";
 import { PurchaseType } from "./common";
+import { Box } from "@mui/material";
 
 export type Props = {
-  purchaseType: PurchaseType;
   num: number;
   fixed?: number;
   prefix?: string;
 };
 
-export const FixedNumber: React.FC<Props> = ({
-  purchaseType,
-  num,
-  fixed,
-  prefix,
-}) => {
+export const FixedNumber: React.FC<Props> = ({ num, fixed, prefix }) => {
   const fixedNum = num >= 0 ? num : -num;
   const text = `${prefix ?? ""}${
     fixed === undefined ? fixedNum : fixedNum.toFixed(fixed)
   }`;
-  return <ColoredText purchaseType={purchaseType} text={text} />;
+  return <Box typography="body2">{text}</Box>;
 };
