@@ -48,26 +48,15 @@ export const PurchaseTable: React.FC<Props> = ({}: Props) => {
       key: result.id,
       cells: {
         purchasedAt: (
-          <ColoredText
-            text={dayjs(result.purchased_at).format("MM/DD/YYYY")}
-            purchaseType={purchaseType}
-          />
+          <Box typography="body2">
+            {dayjs(result.purchased_at).format("MM/DD/YYYY")}
+          </Box>
         ),
         type: <ColoredText text={purchaseType} purchaseType={purchaseType} />,
-        quantity: (
-          <FixedNumber purchaseType={purchaseType} num={result.quantity} />
-        ),
-        price: (
-          <FixedNumber
-            purchaseType={purchaseType}
-            prefix="$"
-            num={result.price}
-            fixed={2}
-          />
-        ),
+        quantity: <FixedNumber num={result.quantity} />,
+        price: <FixedNumber prefix="$" num={result.price} fixed={2} />,
         total: (
           <FixedNumber
-            purchaseType={purchaseType}
             prefix="$"
             num={result.quantity * result.price}
             fixed={2}

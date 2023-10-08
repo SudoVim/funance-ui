@@ -63,6 +63,7 @@ export type AccountPosition = {
   rawPurchases: HoldingAccountPurchase[];
   heldPurchases: HoldingAccountPurchase[];
   sales: Sale[];
+  profit: number;
 };
 
 export type HoldingAccountPurchasesBySymbol = Record<

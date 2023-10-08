@@ -80,6 +80,11 @@ export const getPositions = createSelector(
         cost += purchase.quantity * purchase.price;
       }
 
+      let profit = 0;
+      for (const sale of sales) {
+        profit += (sale.sell.price - sale.buy.price) * sale.sell.quantity;
+      }
+
       ret.push({
         ticker: { symbol },
         shares,
@@ -87,6 +92,7 @@ export const getPositions = createSelector(
         rawPurchases,
         heldPurchases: heldPurchases.reverse(),
         sales,
+        profit,
       });
     }
 
