@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { List } from "./list";
 import { Create } from "./create";
 import { FundWrapper } from "./fund-wrapper";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { Box, Grid, Container } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import HeaderBar from "./HeaderBar";
@@ -17,10 +17,10 @@ export const Top: React.FC<Props> = () => {
       }}
     >
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <HeaderBar />
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Container maxWidth="sm">
             <Box
               sx={{

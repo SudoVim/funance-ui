@@ -1,6 +1,6 @@
 import React from "react";
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import {
   createPaginatedEndpointSlice,
   PaginatedEndpointRequest,

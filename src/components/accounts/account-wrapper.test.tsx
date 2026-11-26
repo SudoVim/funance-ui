@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { vi, describe, expect, beforeEach, it, expect } from "vitest";
+import { vi, describe, beforeEach, it, expect } from "vitest";
 import { useDispatch, useSelector } from "react-redux";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import { emptyEndpoint } from "features/api/endpoint";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { selectors } from "features";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 
 import { AccountWrapper } from "./account-wrapper";
 
@@ -27,8 +27,8 @@ vi.mock("react-redux", async (importOriginal) => {
   };
 });
 
-vi.mock("react-router-dom", async (importOriginal) => {
-  const original = await importOriginal("react-router-dom");
+vi.mock("react-router", async (importOriginal) => {
+  const original = await importOriginal("react-router");
 
   return {
     ...original,

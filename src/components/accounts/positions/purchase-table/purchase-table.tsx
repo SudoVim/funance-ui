@@ -48,7 +48,7 @@ export const PurchaseTable: React.FC<Props> = ({}: Props) => {
       key: result.id,
       cells: {
         purchasedAt: (
-          <Box typography="body2">
+          <Box sx={{ typography: "body2" }}>
             {dayjs(result.purchased_at).format("MM/DD/YYYY")}
           </Box>
         ),

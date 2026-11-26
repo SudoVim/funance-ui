@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { selectors } from "features";
 import { Box, Button } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 import { PositionTable } from "./position-table";
 
 export type Props = {};

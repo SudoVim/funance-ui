@@ -2,6 +2,7 @@ import {
   createSlice,
   PayloadAction,
   SliceCaseReducers,
+  SliceSelectors,
 } from "@reduxjs/toolkit";
 
 export type ClosedModalState = {
@@ -24,7 +25,12 @@ export type ModalSliceOpts = {
 };
 
 export function createModalSlice<T = undefined>({ name }: ModalSliceOpts) {
-  return createSlice<ModalState<T>, SliceCaseReducers<ModalState<T>>>({
+  return createSlice<
+    ModalState<T>,
+    SliceCaseReducers<ModalState<T>>,
+    string,
+    SliceSelectors<ModalState<T>>
+  >({
     name,
     initialState: closedModalState,
     reducers: {

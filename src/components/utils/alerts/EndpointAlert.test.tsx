@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import { describe, it, expect } from "vitest";
 
 import { EndpointAlert } from "./EndpointAlert";

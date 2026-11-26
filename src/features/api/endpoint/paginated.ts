@@ -3,6 +3,7 @@ import {
   PayloadAction,
   SliceCaseReducers,
   Slice,
+  SliceSelectors,
   Reducer,
 } from "@reduxjs/toolkit";
 import {
@@ -41,8 +42,8 @@ export function paginatedSearchParams({ url, page }: PaginatedEndpointRequest) {
 
 export type PaginatedEndpointResponse<P = undefined> = {
   count: number;
-  next: string;
-  previous: string;
+  next: string | null;
+  previous: string | null;
   results: P[];
 };
 
@@ -53,8 +54,8 @@ export type FilledPaginatedEndpoint<P = undefined, E = DefaultError> = {
   isLoading: false;
   isFilled: true;
   count: number;
-  next: string;
-  previous: string;
+  next: string | null;
+  previous: string | null;
   pages: IndirectEndpoint<PaginatedEndpointResponse<P>, E>;
   errorData?: E;
 };
@@ -119,7 +120,9 @@ export function createPaginatedEndpointSlice<
   });
   const slice = createSlice<
     PaginatedEndpoint<P, E>,
-    SliceCaseReducers<PaginatedEndpoint<P, E>>
+    SliceCaseReducers<PaginatedEndpoint<P, E>>,
+    string,
+    SliceSelectors<PaginatedEndpoint<P, E>>
   >({
     name,
     initialState: emptyEndpoint,

@@ -79,7 +79,7 @@ describe("test accountPurchasessPage", () => {
     testSaga(saga, { payload: request })
       .next()
       .call(authRequest, {
-        path: "/holding_account_purchases/?page=1",
+        path: "/holding_account_actions/?page=1",
         method: "GET",
       })
       .next(response)
@@ -100,7 +100,7 @@ describe("test accountPurchasessPage", () => {
     testSaga(saga, { payload: request })
       .next()
       .call(authRequest, {
-        path: "/holding_account_purchases/?page=1&holding_account=abc123&ticker=MSFT",
+        path: "/holding_account_actions/?page=1&holding_account=abc123&ticker_symbol=MSFT",
         method: "GET",
       })
       .next(response)
@@ -127,14 +127,14 @@ describe("test createAccountPurchase", () => {
     testSaga(saga, { payload: request })
       .next()
       .call(authRequest, {
-        path: "/holding_accounts/account-id/create_purchase/",
+        path: "/holding_accounts/account-id/actions/",
         method: "POST",
         body: {
-          account: "account-id",
-          ticker: "MSFT",
+          ticker_symbol: "MSFT",
+          action: "buy",
           quantity: 17,
           price: 1234.56,
-          purchased_at: "2023-08-19",
+          purchased_on: "2023-08-19",
         },
       })
       .next(response)
@@ -155,7 +155,7 @@ describe("test getPurchase", () => {
     testSaga(saga, { payload: request })
       .next()
       .call(authRequest, {
-        path: "/holding_account_purchases/purchase%25id/",
+        path: "/holding_account_actions/purchase%25id/",
         method: "GET",
       })
       .next(response)
@@ -176,7 +176,7 @@ describe("test deletePurchase", () => {
     testSaga(saga, { payload: request })
       .next()
       .call(authRequest, {
-        path: "/holding_account_purchases/purchase%25id/",
+        path: "/holding_account_actions/purchase%25id/",
         method: "DELETE",
       })
       .next(response)

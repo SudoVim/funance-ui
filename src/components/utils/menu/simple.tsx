@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 export type MenuItem = {
   key: string;

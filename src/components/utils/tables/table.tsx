@@ -9,7 +9,7 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 import { useTheme } from "@mui/material";
 
 export type Row = {

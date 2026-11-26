@@ -18,8 +18,8 @@ export const FormGrid: React.FC<Props> = ({ children, items }) => {
 
   const renderItems = useCallback((items: Item[]) => {
     return items.map(({ key, element }: Item) => (
-      <Grid item xs={12} key={key}>
-        <Grid container justifyContent="center" alignItems="center">
+      <Grid size={12} key={key}>
+        <Grid container sx={{ justifyContent: "center", alignItems: "center" }}>
           {element}
         </Grid>
       </Grid>
@@ -59,7 +59,7 @@ export const FormGrid: React.FC<Props> = ({ children, items }) => {
   }, [items, childItems]);
 
   return (
-    <Grid container spacing={2} p={2}>
+    <Grid container spacing={2} sx={{ p: 2 }}>
       {renderInner()}
     </Grid>
   );

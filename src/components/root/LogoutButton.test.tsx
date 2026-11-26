@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import { useDispatch, useSelector } from "react-redux";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import { emptyEndpoint } from "features/api/endpoint";
 import { Box } from "@mui/material";
 

@@ -148,11 +148,11 @@ describe("test getFundAllocationsPage", () => {
     testSaga(saga, { payload: request })
       .next()
       .call(authRequest, {
-        path: "/funds/fund%25id/?page=1",
+        path: "/funds/fund%25id/allocations/?page=1",
         method: "GET",
       })
       .next(response)
-      .call(endpoints.list.handleResponse, { request, response })
+      .call(endpoints.allocations.list.handleResponse, { request, response })
       .next()
       .isDone();
   });

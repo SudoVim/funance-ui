@@ -1,9 +1,9 @@
 import React, { useMemo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { actions, selectors } from "features";
 import { EndpointAlert } from "components/utils";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 
 export type Props = {};
 

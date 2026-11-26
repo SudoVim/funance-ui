@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import { Create } from "./create";
 import { List } from "./list";
 import { Account } from "./account";

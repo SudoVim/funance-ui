@@ -9,11 +9,28 @@ export type HoldingAccount = {
   id: string;
   name: string;
   currency: string;
-  available_cash: number;
+  created_at: string;
+  updated_at: string;
 };
 
 export type Ticker = {
   symbol: string;
+};
+
+// Wire shape of holdings.HoldingAccountAction. The UI still folds buys and
+// sells into signed HoldingAccountPurchase rows after the response arrives.
+export type HoldingAccountActionName = "buy" | "sell";
+
+export type HoldingAccountAction = {
+  id: string;
+  ticker_symbol: string;
+  action: HoldingAccountActionName;
+  quantity: number | string;
+  price: number | string;
+  purchased_on: string;
+  remaining_quantity?: number | string | null;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type HoldingAccountPurchase = {
