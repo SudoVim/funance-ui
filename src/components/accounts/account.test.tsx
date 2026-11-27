@@ -1,9 +1,9 @@
 import React from "react";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import { useSelector } from "react-redux";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import { Box } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 import { Account } from "./account";
 

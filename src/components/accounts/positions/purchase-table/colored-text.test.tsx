@@ -1,6 +1,6 @@
 import React from "react";
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import { useTheme } from "@mui/material";
 
 import { ColoredText } from "./colored-text";

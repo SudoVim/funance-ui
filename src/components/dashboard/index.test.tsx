@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import { useDispatch, useSelector } from "react-redux";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import { useNavigate } from "react-router";
 
 import { Dashboard } from "./index";
@@ -19,8 +19,10 @@ vi.mock("react-redux", () => {
   };
 });
 
-vi.mock("react-router", () => {
+vi.mock("react-router", async (importOriginal) => {
+  const original = await importOriginal();
   return {
+    ...original,
     useNavigate: vi.fn(),
   };
 });

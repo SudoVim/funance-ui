@@ -14,5 +14,5 @@ export const FixedNumber: React.FC<Props> = ({ num, fixed, prefix }) => {
   const text = `${prefix ?? ""}${
     fixed === undefined ? fixedNum : fixedNum.toFixed(fixed)
   }`;
-  return <Box typography="body2">{text}</Box>;
+  return <Box sx={{ typography: "body2" }}>{text}</Box>;
 };

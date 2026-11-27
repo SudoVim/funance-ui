@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import { useDispatch, useSelector } from "react-redux";
-import { shallow } from "enzyme";
-import { useParams } from "react-router-dom";
+import { shallow } from "test/shallow";
+import { useParams } from "react-router";
 import { emptyEndpoint } from "features/api/endpoint";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 
 import { FundWrapper } from "./fund-wrapper";
 
@@ -27,7 +27,7 @@ vi.mock("react-redux", async (importOriginal) => {
   };
 });
 
-vi.mock("react-router-dom", async (importOriginal) => {
+vi.mock("react-router", async (importOriginal) => {
   const original = await importOriginal();
 
   return {

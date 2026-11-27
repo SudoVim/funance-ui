@@ -14,7 +14,7 @@ export const ColoredText: React.FC<Props> = ({ purchaseType, text }) => {
       ? theme.palette.primary.main
       : theme.palette.secondary.main;
   return (
-    <Box typography="body2" color={color} fontWeight="bold">
+    <Box color={color} sx={{ typography: "body2", fontWeight: "bold" }}>
       {text}
     </Box>
   );

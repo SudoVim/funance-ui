@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router";
 import { router } from "./router";
 
 export function Root() {

@@ -1,7 +1,7 @@
 import React from "react";
 import { vi, describe, beforeEach, it, expect } from "vitest";
 import { useSelector } from "react-redux";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import { ColoredText } from "./colored-text";
 import { FixedNumber } from "./fixed-number";
 import { DeletePurchaseButton } from "./delete-purchase-button";

@@ -14,7 +14,7 @@ const root = createRoot(container);
 
 export const themeOptions = {
   palette: {
-    type: "light",
+    mode: "light" as const,
     primary: {
       main: "#169231",
     },

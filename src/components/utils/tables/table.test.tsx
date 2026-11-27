@@ -1,8 +1,8 @@
 import React from "react";
 import { vi, describe, beforeEach, it, expect } from "vitest";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import { TableHead, TableCell, TableBody, TableRow } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router";
 
 import { Table } from "./table";
 

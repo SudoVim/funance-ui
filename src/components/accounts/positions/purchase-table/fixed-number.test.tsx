@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, it, expect } from "vitest";
-import { shallow } from "enzyme";
+import { shallow } from "test/shallow";
 import { Box } from "@mui/material";
 
 import { FixedNumber } from "./fixed-number";

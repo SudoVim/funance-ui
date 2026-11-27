@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter } from "react-router";
 import { Top } from "./Top";
 import { Dashboard } from "components/dashboard";
 import { Login, LoggedInApp, AuthGate } from "components/account";

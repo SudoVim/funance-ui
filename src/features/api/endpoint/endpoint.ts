@@ -3,6 +3,7 @@ import {
   PayloadAction,
   SliceCaseReducers,
   Slice,
+  SliceSelectors,
   Reducer,
 } from "@reduxjs/toolkit";
 import { APIResponse, DefaultError } from "../request";
@@ -39,9 +40,7 @@ export type ErrorEndpoint<E> = {
 export type FilledEndpoint<T, E> = SuccessfulEndpoint<T> | ErrorEndpoint<E>;
 
 export type Endpoint<T = unknown, E = DefaultError> =
-  | EmptyEndpoint
-  | LoadingEndpoint
-  | FilledEndpoint<T, E>;
+  EmptyEndpoint | LoadingEndpoint | FilledEndpoint<T, E>;
 
 export const emptyEndpoint: EmptyEndpoint = {
   isEmpty: true,
@@ -93,7 +92,12 @@ export function createEndpointSlice<
   T = undefined,
   E = DefaultError,
 >({ name }: EndpointProps): EndpointSlice<R, T, E> {
-  const slice = createSlice<Endpoint<T, E>, SliceCaseReducers<Endpoint<T, E>>>({
+  const slice = createSlice<
+    Endpoint<T, E>,
+    SliceCaseReducers<Endpoint<T, E>>,
+    string,
+    SliceSelectors<Endpoint<T, E>>
+  >({
     name,
     initialState: emptyEndpoint,
     reducers: {
@@ -193,7 +197,9 @@ export function createIndirectEndpointSlice<
   const naiveSlice = createEndpointSlice<R, T, E>({ name });
   const slice = createSlice<
     IndirectEndpoint<T, E>,
-    SliceCaseReducers<IndirectEndpoint<T, E>>
+    SliceCaseReducers<IndirectEndpoint<T, E>>,
+    string,
+    SliceSelectors<IndirectEndpoint<T, E>>
   >({
     name,
     initialState: {},

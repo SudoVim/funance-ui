@@ -3,6 +3,7 @@ import {
   PayloadAction,
   SliceCaseReducers,
   Slice,
+  SliceSelectors,
   Reducer,
 } from "@reduxjs/toolkit";
 import {
@@ -119,7 +120,9 @@ export function createPaginatedEndpointSlice<
   });
   const slice = createSlice<
     PaginatedEndpoint<P, E>,
-    SliceCaseReducers<PaginatedEndpoint<P, E>>
+    SliceCaseReducers<PaginatedEndpoint<P, E>>,
+    string,
+    SliceSelectors<PaginatedEndpoint<P, E>>
   >({
     name,
     initialState: emptyEndpoint,

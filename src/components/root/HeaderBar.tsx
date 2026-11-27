@@ -21,7 +21,7 @@ export function HeaderBar() {
       }}
     >
       <Grid container spacing={2}>
-        <Grid item xs={2}>
+        <Grid size={2}>
           <Box
             sx={{
               fontSize: "large",
@@ -32,8 +32,8 @@ export function HeaderBar() {
             Funance
           </Box>
         </Grid>
-        <Grid item xs={8} />
-        <Grid item xs={2}>
+        <Grid size={8} />
+        <Grid size={2}>
           <Box
             sx={{
               textAlign: "right",

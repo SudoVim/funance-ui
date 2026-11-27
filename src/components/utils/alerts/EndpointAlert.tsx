@@ -16,13 +16,13 @@ export const EndpointAlert: React.FC<Props> = ({
 }) => {
   const message = endpoint.isFilled
     ? endpoint.success
-      ? successMessage ?? "Success!"
-      : getError(endpoint.errorData) ?? "An error occurred."
+      ? (successMessage ?? "Success!")
+      : (getError(endpoint.errorData) ?? "An error occurred.")
     : undefined;
   const open = Boolean(
     endpoint.isFilled &&
-      (!endpoint.success || showSuccess || successMessage) &&
-      message !== undefined,
+    (!endpoint.success || showSuccess || successMessage) &&
+    message !== undefined,
   );
   const severity = endpoint.isFilled && endpoint.success ? "success" : "error";
   return (
