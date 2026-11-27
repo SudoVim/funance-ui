@@ -75,10 +75,10 @@ export function* getFundAllocationsPage({
   const searchParams = paginatedSearchParams(request);
   const { id } = request;
   const response: APIResponse = yield call(authRequest, {
-    path: `/funds/${encodeURIComponent(id)}/allocations/?${searchParams.toString()}`,
+    path: `/funds/${encodeURIComponent(id)}/?${searchParams.toString()}`,
     method: "GET",
   });
-  yield call(endpoints.allocations.list.handleResponse, { request, response });
+  yield call(endpoints.list.handleResponse, { request, response });
 }
 
 export function* getFundAllocation({

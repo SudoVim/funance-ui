@@ -3,7 +3,7 @@ import { call } from "redux-saga/effects";
 export const API_URL =
   import.meta.env.VITE_API_URL ?? "http://localhost:8005/api/v1/";
 export const API_CROSS_SITE =
-  import.meta.env.MODE !== "test" &&
+  import.meta.env.NODE_ENV !== "test" &&
   import.meta.env.VITE_API_CROSS_SITE === "true";
 
 function pathToURL(path: string): string {
@@ -19,24 +19,10 @@ function pathToURL(path: string): string {
 export type DefaultError = {
   detail?: string;
   non_field_errors?: Array<string>;
-} & Record<string, unknown>;
+};
 
 export function getError(error: DefaultError): string | undefined {
-  if (error.detail) {
-    return error.detail;
-  }
-  if (error.non_field_errors?.[0]) {
-    return error.non_field_errors[0];
-  }
-  for (const [field, value] of Object.entries(error)) {
-    if (field === "detail" || field === "non_field_errors") {
-      continue;
-    }
-    if (Array.isArray(value) && typeof value[0] === "string") {
-      return value[0];
-    }
-  }
-  return undefined;
+  return error.detail ?? error.non_field_errors?.[0];
 }
 
 export type APIResponse = {

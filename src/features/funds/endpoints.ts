@@ -38,7 +38,7 @@ export function getFundAllocationKeyFromRequest({ id }: FundAllocationRequest) {
   return id;
 }
 
-export type UpdateFundAllocationRequest = FundAllocationRequest & {
+export type UpdateFundAllocationRequest = FundRequest & {
   shares?: number;
 };
 

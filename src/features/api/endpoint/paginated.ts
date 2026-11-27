@@ -42,8 +42,8 @@ export function paginatedSearchParams({ url, page }: PaginatedEndpointRequest) {
 
 export type PaginatedEndpointResponse<P = undefined> = {
   count: number;
-  next: string | null;
-  previous: string | null;
+  next: string;
+  previous: string;
   results: P[];
 };
 
@@ -54,8 +54,8 @@ export type FilledPaginatedEndpoint<P = undefined, E = DefaultError> = {
   isLoading: false;
   isFilled: true;
   count: number;
-  next: string | null;
-  previous: string | null;
+  next: string;
+  previous: string;
   pages: IndirectEndpoint<PaginatedEndpointResponse<P>, E>;
   errorData?: E;
 };
